@@ -22,9 +22,10 @@ class Ship(pg.sprite.Sprite):
         self.health = 3
         #player power up count
         self.powerupvalue = 0
-        #player
+        #player specific initial timers set to 0
         self.time_elapsed_since_pshoot = 0
         self.time_elapsed_since_powerup1 = 0
+        self.time_elapsed_since_powerup2 = 0
     #player update at every frame
     def update(self):
         #player animation update
@@ -37,6 +38,7 @@ class Ship(pg.sprite.Sprite):
             self.rect.x = screen_x - 116
         if self.rect.x < 0:
             self.rect.x = 0
+        #player shoot rate
         self.time_elapsed_since_pshoot += dt
     #player move right
     def moveRight(self, pixels):
@@ -46,7 +48,7 @@ class Ship(pg.sprite.Sprite):
         self.rect.x -= pixels
     #player shoot
     def shoot(self):
-        if self.time_elapsed_since_pshoot > 160 and self.powerupvalue == 0: #player shoot with no powerup
+        if self.time_elapsed_since_pshoot >= 160 and self.powerupvalue == 0: #player shoot with no powerup
             bullet = Bullet()
             bullet.rect.x, bullet.rect.y = self.rect.x + 35, self.rect.y
             interactive_objects.add(bullet)
@@ -56,7 +58,7 @@ class Ship(pg.sprite.Sprite):
             interactive_objects.add(bullet)
             bullet_list.add(bullet)
             self.time_elapsed_since_pshoot = 0
-        elif self.time_elapsed_since_pshoot > 160 and self.powerupvalue == 1: #player shoot with powerup1
+        elif self.time_elapsed_since_pshoot >= 160 and self.powerupvalue == 1: #player shoot with powerup1
             bullet = Bullet()
             bullet.rect.x, bullet.rect.y = self.rect.x + 35, self.rect.y
             interactive_objects.add(bullet)
@@ -70,22 +72,30 @@ class Ship(pg.sprite.Sprite):
             interactive_objects.add(bullet)
             bullet_list.add(bullet)
             self.time_elapsed_since_pshoot = 0
-        elif self.time_elapsed_since_pshoot > 500 and self.powerupvalue == 2: #player shoot with powerup1
+        elif self.time_elapsed_since_pshoot >= 160 and self.powerupvalue == 2: #player shoot with powerup2
             pbullet2 = Pbullet2()
-            pbullet2.rect.x, pbullet2.rect.y = self.rect.x + 35, self.rect.y - 570
+            pbullet2.rect.x, pbullet2.rect.y = self.rect.x + 35, self.rect.y - 635
             interactive_objects.add(pbullet2)
-            pbullet2_list.add(pbullet2)
+            opbullet_list.add(pbullet2)
             pbullet2 = Pbullet2()
-            pbullet2.rect.x, pbullet2.rect.y = self.rect.x + 75, self.rect.y - 570
+            pbullet2.rect.x, pbullet2.rect.y = self.rect.x + 75, self.rect.y - 635
             interactive_objects.add(pbullet2)
-            pbullet2_list.add(pbullet2)
-    #player powerup
+            opbullet_list.add(pbullet2)
+            self.time_elapsed_since_pshoot = 0
+    #player powerups
     def powerup(self):
-        if self.powerupvalue == 1:
+        if self.powerupvalue == 1: #powerup1
             self.time_elapsed_since_powerup1 += dt
             if self.time_elapsed_since_powerup1 > 10000: #powerup1 duration (10sec)
                 self.powerupvalue = 0
-                self.time_elapsed_since_powerup1 = 0          
+                self.time_elapsed_since_powerup1 = 0
+        if self.powerupvalue == 2: #powerup2
+            self.time_elapsed_since_powerup2 += dt
+            if self.time_elapsed_since_powerup2 > 10000: #powerup2 duration (10sec)
+                self.powerupvalue = 0
+                self.time_elapsed_since_powerup2 = 0
+    def consume(self):
+        pg.mixer.Channel(1).play(pg.mixer.Sound('space-sound_powerup1.wav'))
 # --- Player Main Bullet ---
 class Bullet(pg.sprite.Sprite):
     def __init__(self):
@@ -118,19 +128,20 @@ class Pbullet2(pg.sprite.Sprite):
         super(Pbullet2, self).__init__()
         #pbullet2 sprites/animation
         self.images = []
-        self.images.append(pg.transform.scale(pg.image.load('space-image_pbullet2_1.png'), (10, 600)))
-        self.images.append(pg.transform.scale(pg.image.load('space-image_pbullet2_2.png'), (10, 600)))
-        self.images.append(pg.transform.scale(pg.image.load('space-image_pbullet2_3.png'), (10, 600)))
-        self.images.append(pg.transform.scale(pg.image.load('space-image_pbullet2_4.png'), (10, 600)))
-        self.images.append(pg.transform.scale(pg.image.load('space-image_pbullet2_5.png'), (10, 600)))
-        self.images.append(pg.transform.scale(pg.image.load('space-image_pbullet2_6.png'), (10, 600)))
+        self.images.append(pg.transform.scale(pg.image.load('space-image_pbullet2_1.png'), (5, 650)))
+        self.images.append(pg.transform.scale(pg.image.load('space-image_pbullet2_2.png'), (5, 650)))
+        self.images.append(pg.transform.scale(pg.image.load('space-image_pbullet2_3.png'), (5, 650)))
+        self.images.append(pg.transform.scale(pg.image.load('space-image_pbullet2_4.png'), (5, 650)))
+        self.images.append(pg.transform.scale(pg.image.load('space-image_pbullet2_5.png'), (5, 650)))
+        self.images.append(pg.transform.scale(pg.image.load('space-image_pbullet2_6.png'), (5, 650)))
         self.index = 0
         self.image = self.images[self.index]
         #pbullet2  position
         self.rect = self.image.get_rect()
-        #pbullet2  sound
-        pg.mixer.Channel(0).play(pg.mixer.Sound('space-sound_pbullet.wav'))
+        #pbullet2 specific initial timer set to 0
         self.time_elapsed_since_pshoot2 = 0
+        #pbullet2  sound
+##tobeupdated        pg.mixer.Channel(0).play(pg.mixer.Sound('space-sound_pbullet.wav'))
     #pbullet2  update at every frame
     def update(self):
         #pbullet2  animation update
@@ -138,11 +149,9 @@ class Pbullet2(pg.sprite.Sprite):
         if self.index >= len(self.images):
             self.index = 0
         self.image = self.images[self.index]
-        #pbullet2 killed once it leaves screen
-        if self.rect.y < -500:
-            self.kill()
+        #pbullet2 removed every 160 ticks to simulate tracing laser
         self.time_elapsed_since_pshoot2 += dt
-        if self.time_elapsed_since_pshoot2 > 20:
+        if self.time_elapsed_since_pshoot2 > 160:
             self.kill()
             self.time_elapsed_since_pshoot2 = 0
 # --- Player Life Display ---
@@ -172,9 +181,12 @@ class Enemy1(pg.sprite.Sprite):
         self.images.append(pg.transform.scale(pg.image.load('space-image_e1_4.png'), (87, 90)))
         self.index = random.randint(0,3) #randomize starting index(frame) to play
         self.image = self.images[self.index]
-        #Enemy 1 position
+        #enemy 1 position
         self.rect = self.image.get_rect()
+        #enemy 1 initial health count
         self.health = 2
+        #enemy 1 id
+        self.id = 1
     #enemy 1 update at every frame
     def update(self):
         #enemy 1 animation update  
@@ -187,14 +199,15 @@ class Enemy1(pg.sprite.Sprite):
         #enemy 1 killed once it leaves screen
         if self.rect.y > 700:
             self.kill()
+        #enemy 1 killed once health below 0
         if self.health <= 0:
             self.kill()
+    #enemy 1 spawn
     def spawn(self):
         self.rect.x = random.randint(-20, 450)
         self.rect.y = -120
         interactive_objects.add(self)
         enemy_list.add(self)
-        enemy_e1_list.add(self)
 # --- Enemy 2 ---
 class Enemy2(pg.sprite.Sprite):
     def __init__(self):
@@ -207,10 +220,14 @@ class Enemy2(pg.sprite.Sprite):
         self.images.append(pg.transform.scale(pg.image.load('space-image_e2_4.png'), (76, 100)))
         self.index = random.randint(0,3) #randomize starting index(frame) to play
         self.image = self.images[self.index]
-        #Enemy 2 position
+        #enemy 2 position
         self.rect = self.image.get_rect()
+        #enemy 2 specific initial timer set to 0
         self.time_elapsed_since_e2shoot = 0
+        #enemy 2 initial health count
         self.health = 3
+        #enemy 2 id
+        self.id = 2
     #enemy 2 update at every frame
     def update(self):
         #enemy 2 animation update  
@@ -223,22 +240,23 @@ class Enemy2(pg.sprite.Sprite):
         #enemy 2 killed once it leaves screen
         if self.rect.y > 700:
             self.kill()
+        #enemy 2 shoot
         self.time_elapsed_since_e2shoot += dt
         if self.time_elapsed_since_e2shoot > 400:
             e2bullet = E2bullet()
             e2bullet.rect.x, e2bullet.rect.y = self.rect.x + 30, self.rect.y + 80
             interactive_objects.add(e2bullet)
             enemy_list.add(e2bullet)
-            enemy_e2bullet_list.add(e2bullet)
             self.time_elapsed_since_e2shoot = 0
+        #enemy 2 killed once health below 0
         if self.health <= 0:
             self.kill()
+    #enemy 2 spawn
     def spawn(self):
         self.rect.x = random.randint(-20, 450)
         self.rect.y = -120
         interactive_objects.add(self)
         enemy_list.add(self)
-        enemy_e2_list.add(self)
 # --- Small Meteor ---
 class Smallmeteor(pg.sprite.Sprite):
     def __init__(self):
@@ -256,6 +274,8 @@ class Smallmeteor(pg.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.x = 200
         self.y = 200
+        #small meteor id
+        self.id = 0
     #small meteor update at every frame
     def update(self):
         #small meteor animation update        
@@ -268,12 +288,12 @@ class Smallmeteor(pg.sprite.Sprite):
         #small meteor killed once it leaves screen
         if self.rect.y > 700:
             self.kill()
+    #small meteor spawn
     def spawn(self):
         self.rect.x = random.randint(-20, 450)
         self.rect.y = -100    
         interactive_objects.add(self)
         enemy_list.add(self)
-        enemy_smallmeteor_list.add(self)
 # --- Enemy Bullet Classes ---
 class E2bullet(pg.sprite.Sprite):
     def __init__(self):
@@ -288,6 +308,8 @@ class E2bullet(pg.sprite.Sprite):
         self.image = self.images[self.index]
         #e2bullet position
         self.rect = self.image.get_rect()
+        #e2bullet id
+        self.id = 2.1
         #e2bullet sound
 ##        pg.mixer.Channel(0).play(pg.mixer.Sound('space-sound_pbullet.wav'))
     #e2bullet update at every frame
@@ -319,6 +341,8 @@ class Powerup1(pg.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.x = 200
         self.y = 200
+        #powerup1 id
+        self.id = 1
     #powerup 1 update at every frame
     def update(self):
         #powerup 1 animation update        
@@ -331,14 +355,12 @@ class Powerup1(pg.sprite.Sprite):
         #powerup 1 killed once it leaves screen
         if self.rect.y > 700:
             self.kill()
+    #powerup1 spawn
     def spawn(self):
         self.rect.x = random.randint(0, 500)
         self.rect.y = -100    
         interactive_objects.add(self)
-        powerup1_list.add(self)
-    #powerup1 action once consumed
-    def consume(self):
-        pg.mixer.Channel(1).play(pg.mixer.Sound('space-sound_powerup1.wav'))
+        powerup_list.add(self)
 # --- PowerUp 2 ---
 class Powerup2(pg.sprite.Sprite):
     def __init__(self):
@@ -354,6 +376,8 @@ class Powerup2(pg.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.x = 200
         self.y = 200
+        #powerup2 id
+        self.id = 2
     #powerup 2 update at every frame
     def update(self):
         #powerup 2 animation update        
@@ -366,14 +390,12 @@ class Powerup2(pg.sprite.Sprite):
         #powerup 2 killed once it leaves screen
         if self.rect.y > 700:
             self.kill()
+    #powerup2 spawn
     def spawn(self):
         self.rect.x = random.randint(0, 500)
         self.rect.y = -100    
         interactive_objects.add(self)
-        powerup2_list.add(self)
-    #powerup2 action once consumed
-    def consume(self):
-        pg.mixer.Channel(1).play(pg.mixer.Sound('space-sound_powerup1.wav'))
+        powerup_list.add(self)
 # --- Player Explosion ---
 class Pex(pg.sprite.Sprite):
     def __init__(self):
@@ -568,20 +590,15 @@ def game_play(gameplay, highscore):
     """
     # --- Initial Setup ---
     # --- Sprite Groups Generation ---
-    global interactive_objects, noninteractive_objects, bullet_list, enemy_list, enemy_e1_list, enemy_e2_list, enemy_smallmeteor_list, enemy_e2bullet_list, powerup1_list, powerup2_list, pbullet2_list
+    global interactive_objects, noninteractive_objects, bullet_list, opbullet_list, enemy_list, powerup_list #main lists for interactions
     interactive_objects = pg.sprite.Group()
     noninteractive_objects = pg.sprite.Group()
     enemy_list = pg.sprite.Group()
-    enemy_e1_list = pg.sprite.Group()
-    enemy_e2_list = pg.sprite.Group()
     player_list = pg.sprite.Group()
     bullet_list = pg.sprite.Group()
+    opbullet_list = pg.sprite.Group()
     plife_list = pg.sprite.Group()
-    enemy_smallmeteor_list = pg.sprite.Group()
-    powerup1_list = pg.sprite.Group()
-    powerup2_list = pg.sprite.Group()
-    enemy_e2bullet_list = pg.sprite.Group()
-    pbullet2_list = pg.sprite.Group()
+    powerup_list = pg.sprite.Group()
     # --- Player/Player Life Generation ---
     ship = Ship()
     player_list.add(ship)
@@ -615,11 +632,11 @@ def game_play(gameplay, highscore):
             if event.type == pg.QUIT: #quit game
                 gameplay = False
         # --- Player Management ---
-        keypressed = pg.key.get_pressed() #player movement
-        if keypressed[pg.K_LEFT]:
+        keypressed = pg.key.get_pressed()
+        if keypressed[pg.K_LEFT]: #player movement to left
             ship.moveLeft(5)
-        if keypressed[pg.K_RIGHT]:
-            ship.moveRight(5) 
+        if keypressed[pg.K_RIGHT]: #player movement to right
+            ship.moveRight(5)
         if keypressed[pg.K_SPACE] and ship.health > 0: #player shoot
             ship.shoot()
         # --- Score Increment Management ---
@@ -632,7 +649,7 @@ def game_play(gameplay, highscore):
         starsspawntime = random.randint(75,105)
         smallmeteorspawntime = random.randint(600, 750)
         powerup1spawntime = random.randint(55000, 60000)
-        powerup2spawntime = random.randint(1000, 1000)
+        powerup2spawntime = random.randint(85000, 90000)
         if time_elapsed_since_start < 60000:
             e1spawntime = random.randint(900, 1100)
             e2spawntime = random.randint(3000, 4000)
@@ -668,62 +685,47 @@ def game_play(gameplay, highscore):
             powerup1 = Powerup1()
             powerup1.spawn()
             time_elapsed_since_powerup1spawn = 0
-        time_elapsed_since_powerup2spawn += dt #powerup 1 spawn
+        time_elapsed_since_powerup2spawn += dt #powerup 2 spawn
         if time_elapsed_since_powerup2spawn > powerup2spawntime:
             powerup2 = Powerup2()
             powerup2.spawn()
             time_elapsed_since_powerup2spawn = 0
         # --- Collision Management ---
         # --- Bullet Collision with Enemy ---
-        for smallmeteor in enemy_smallmeteor_list:
-            smallmeteorhits = pg.sprite.spritecollide(smallmeteor, bullet_list, True)
-            for pbullet in smallmeteorhits:
+        for enemy in enemy_list:
+            enemyhits = pg.sprite.spritecollide(enemy, bullet_list, True)
+            enemyhitsop = pg.sprite.spritecollide(enemy, opbullet_list, False)
+            if (enemyhits or enemyhitsop) and (enemy.id == 0 or enemy.id == 2.1): #collision with enemy that has health = 1
                 asteroidex = Asteroidex()
-                asteroidex.rect.x = pbullet.rect.x - 40
-                asteroidex.rect.y = pbullet.rect.y - 50
+                asteroidex.rect.x = enemy.rect.x
+                asteroidex.rect.y = enemy.rect.y
                 interactive_objects.add(asteroidex)
-                smallmeteor.kill()
-        for e1 in enemy_e1_list:
-            e1hits = pg.sprite.spritecollide(e1, bullet_list, True)
-            for pbullet in e1hits:
+                enemy.kill()
+            elif (enemyhits or enemyhitsop) and (enemy.id == 1 or enemy.id == 2): #collision with enemy that has health > 1
                 smallex = Smallex()
-                smallex.rect.x = pbullet.rect.x - 30
-                smallex.rect.y = pbullet.rect.y - 100
+                smallex.rect.x = enemy.rect.x
+                smallex.rect.y = enemy.rect.y
                 interactive_objects.add(smallex)
-                e1.health -= 1 
-        for e2 in enemy_e2_list:
-            e2hits = pg.sprite.spritecollide(e2, bullet_list, True)
-            for pbullet in e2hits:
-                smallex = Smallex()
-                smallex.rect.x = pbullet.rect.x - 30
-                smallex.rect.y = pbullet.rect.y - 100
-                interactive_objects.add(smallex)
-                e2.health -= 1
-        for e2bullet in enemy_e2bullet_list:
-            e2bullethits = pg.sprite.spritecollide(e2bullet, bullet_list, True)
-            for pbullet in e2bullethits:
-                smallex = Smallex()
-                smallex.rect.x = pbullet.rect.x - 30
-                smallex.rect.y = pbullet.rect.y - 100
-                interactive_objects.add(smallex)
-                e2bullet.kill()
+                enemy.health -= 1
+        # --- Player Collision with Enemy ---
         for ship in player_list:
-            playerhit = pg.sprite.spritecollide(ship, enemy_list, True)
-            powerup1hit = pg.sprite.spritecollide(ship, powerup1_list, True)
-            powerup2hit = pg.sprite.spritecollide(ship, powerup2_list, True)
-            # --- Player Collision with Enemy ---
-            for damage_taken in playerhit:
+            playerhits = pg.sprite.spritecollide(ship, enemy_list, True)
+            if playerhits:
                 pex = Pex()
                 pex.rect.center = ship.rect.center
                 interactive_objects.add(pex)
                 ship.health -= 1
-            # --- Player Collision with Power Up ---
-            for playercontact in powerup1hit:
-                powerup1.consume()
+        # --- Player Collision with Power Up ---
+        for powerup in powerup_list:
+            poweruphits = pg.sprite.spritecollide(powerup, player_list, False)
+            if poweruphits and powerup.id == 1:
+                ship.consume()
                 ship.powerupvalue = 1
-            for playercontact in powerup2hit:
-                powerup2.consume()
+                powerup.kill()
+            elif poweruphits and powerup.id == 2:
+                ship.consume()
                 ship.powerupvalue = 2
+                powerup.kill()
         # --- Player Life Management ---
         if ship.health == 2:
             playerlife1.kill()
