@@ -16,7 +16,7 @@ class Ship(pg.sprite.Sprite):
         self.image = self.images[self.index]
         #player position
         self.rect = self.image.get_rect()
-        self.rect.x = 175
+        self.rect.x = 200
         self.rect.y = 600
         #player initial health count
         self.health = 3
@@ -82,14 +82,26 @@ class Ship(pg.sprite.Sprite):
             interactive_objects.add(pbullet2)
             opbullet_list.add(pbullet2)
             self.time_elapsed_since_pshoot = 0
+    #player test shoot
+    def testshoot(self):
+        if self.time_elapsed_since_pshoot >= 160: #player test shoot in gamemode select screen
+            bullet = Bullet()
+            bullet.rect.x, bullet.rect.y = self.rect.x + 35, self.rect.y
+            test_list.add(bullet)
+            bullet = Bullet()
+            bullet.rect.x, bullet.rect.y = self.rect.x + 75, self.rect.y
+            test_list.add(bullet)
+            self.time_elapsed_since_pshoot = 0
     #player powerups
     def powerup(self):
         if self.powerupvalue == 1: #powerup1
+            self.time_elapsed_since_powerup2 = 0 #reset other active powerups
             self.time_elapsed_since_powerup1 += dt
             if self.time_elapsed_since_powerup1 > 10000: #powerup1 duration (10sec)
                 self.powerupvalue = 0
                 self.time_elapsed_since_powerup1 = 0
         if self.powerupvalue == 2: #powerup2
+            self.time_elapsed_since_powerup1 = 0 #reset other active powerups
             self.time_elapsed_since_powerup2 += dt
             if self.time_elapsed_since_powerup2 > 10000: #powerup2 duration (10sec)
                 self.powerupvalue = 0
@@ -165,7 +177,7 @@ class Playerlife(pg.sprite.Sprite):
         self.image = self.images[self.index]
         #player life display position
         self.rect = self.image.get_rect()
-    #play life display update at every frame
+    #player life display update at every frame
     def update(self):
         None
 # --- Enemy-Related Classes ---
@@ -543,6 +555,11 @@ def game_intro():
     Args:
         None
     """
+    #create display ship as decoration
+    display_list = pg.sprite.Group()
+    displayship = Ship()
+    displayship.rect.x, displayship.rect.y = 190, 300
+    display_list.add(displayship)
     gameintro = True
     while gameintro == True: #loop while gameintro is still running
         for event in pg.event.get():
@@ -550,43 +567,120 @@ def game_intro():
                 gameintro = False
             mouse = pg.mouse.get_pos() #check mouse position
             if event.type == pg.MOUSEBUTTONDOWN and 298 > mouse[0] > 198 and 450 > mouse[1] > 400: #start game
+                displayship.kill()
                 gameintro = False
-                gameplay = True
+                gamemodeselect = True
             if event.type == pg.MOUSEBUTTONDOWN and 298 > mouse[0] > 198 and 510 > mouse[1] > 460: #quit game
                 gameintro = False
-                gameplay = False
+                gamemodeselect = False
         # --- Draw The Screen ---
         screen.fill((0,0,0))
         button("Start", 32, (255, 255, 255), 198, 400, 100, 50, dark_green, green)
         button("Quit", 32, (255, 255, 255), 198, 460, 100, 50, dark_red, red)
         gameintro_text1 = gameintro_text1_font.render("Welcome to", True, white)
         gameintro_text2 = gameintro_text2_font.render("Space Ships!", True, yellow)
-        gameintro_text3 = gameintro_instruction_font.render("<- Left Arrow                Right Arrow ->", True, white)
-        gameintro_text4 = gameintro_instruction2_font.render("MOVE", True, green)
-        gameintro_text5 = gameintro_instruction_font.render("Space                   Bar", True, white)
-        gameintro_text6 = gameintro_instruction2_font.render("SHOOT", True, green)
+        display_list.update()
+        display_list.draw(screen)
         screen.blit(gameintro_text1, (167, 200))
         screen.blit(gameintro_text2, (97, 250))
-        screen.blit(gameintro_text3, (107, 310))
-        screen.blit(gameintro_text4, (220, 312))
-        screen.blit(gameintro_text5, (161, 332))
-        screen.blit(gameintro_text6, (214, 334))
         pg.display.flip()
+        clock.tick(24)
     #initial highscore set to 0
     highscore = 0
-    #launch/exit game base on choice
+    #launch to gamemode select/exit game base on choice
+    if gamemodeselect == True:
+        gamemode_select(gamemodeselect, highscore)
+    if gamemodeselect == False:
+        pg.quit()
+        sys.exit()
+def gamemode_select(gamemodeselect, highscore):
+    """
+    Game loop that runs when selecting gamemode
+    Args:
+        gamemodeselect: Loop if true
+        highscore: Check and include previous attempt highscores if applicable
+    """
+    #create test ships for players to try out controls
+    global test_list
+    test_list = pg.sprite.Group()
+    testship = Ship()
+    testship2 = Ship()
+    testship.rect.x, testship.rect.y = 190, 170
+    testship2.rect.x, testship2.rect.y = 190, 315
+    test_list.add(testship)
+    test_list.add(testship2)
+    gamemodeselect = True
+    while gamemodeselect == True: #loop while gamemodeselect is still running
+        for event in pg.event.get():
+            if event.type == pg.QUIT: #quit game
+                gamemodeselect = False
+                gameplay = False
+            mouse = pg.mouse.get_pos() #check mouse position
+            if event.type == pg.MOUSEBUTTONDOWN and 348 > mouse[0] > 148 and 450 > mouse[1] > 400: #gamemode 1
+                gamemode = 1
+                gamemodeselect = False
+                gameplay = True
+            if event.type == pg.MOUSEBUTTONDOWN and 348 > mouse[0] > 148 and 510 > mouse[1] > 460: #gamemode 2
+                gamemode = 2
+                gamemodeselect = False
+                gameplay = True
+        keypressed = pg.key.get_pressed()
+        if keypressed[pg.K_LEFT]: #player1 movement to left
+            testship.moveLeft(5)
+        if keypressed[pg.K_RIGHT]: #player1 movement to right
+            testship.moveRight(5)
+        if keypressed[pg.K_KP3] and testship.health > 0: #player1 shoot
+            testship.testshoot()
+        if keypressed[pg.K_a]: #player2 movement to left
+            testship2.moveLeft(5)
+        if keypressed[pg.K_d]: #player2 movement to right
+            testship2.moveRight(5)
+        if keypressed[pg.K_SPACE] and testship2.health > 0: #player2 shoot
+            testship2.testshoot()
+        # --- Draw The Screen ---
+        screen.fill((0,0,0))
+        button("Single Player", 32, (255, 255, 255), 148, 400, 200, 50, dark_green, green)
+        button("Two Player", 32, (255, 255, 255), 148, 460, 200, 50, dark_green, green)
+        gamemodeselect_text1 = gamemodeselect_text1_font.render("Controls", True, yellow)
+        gamemodeselect_text2 = gamemodeselect_instruction1_font.render("Single Player", True, white)
+        gamemodeselect_text3 = gamemodeselect_instruction1_font.render("Two Player", True, white)
+        gamemodeselect_text4 = gamemodeselect_instruction2_font.render("<- Left Arrow                Right Arrow ->", True, white)
+        gamemodeselect_text5 = gamemodeselect_instruction2_font.render("<- A                D ->", True, white)
+        gamemodeselect_text6 = gamemodeselect_instruction2_font.render("Space                   Bar", True, white)
+        gamemodeselect_text7 = gamemodeselect_instruction2_font.render("Num                   3", True, white)
+        gamemodeselect_text8 = gamemodeselect_instruction3_font.render("MOVE", True, green)
+        gamemodeselect_text9 = gamemodeselect_instruction3_font.render("MOVE", True, green)
+        gamemodeselect_text10 = gamemodeselect_instruction3_font.render("SHOOT", True, green)
+        gamemodeselect_text11 = gamemodeselect_instruction3_font.render("SHOOT", True, green)
+        test_list.update()
+        test_list.draw(screen)
+        screen.blit(gamemodeselect_text1, (167, 50))
+        screen.blit(gamemodeselect_text2, (190, 100))
+        screen.blit(gamemodeselect_text3, (195, 245))
+        screen.blit(gamemodeselect_text4, (107, 125))
+        screen.blit(gamemodeselect_text5, (175, 270))
+        screen.blit(gamemodeselect_text6, (160, 150))
+        screen.blit(gamemodeselect_text7, (163, 295))
+        screen.blit(gamemodeselect_text8, (218, 125))
+        screen.blit(gamemodeselect_text9, (218, 270))
+        screen.blit(gamemodeselect_text10, (215, 150))
+        screen.blit(gamemodeselect_text11, (215, 295))
+        pg.display.flip()
+        clock.tick(60)
+    #launch gameplay/exit game base on choice
     if gameplay == True:
-        game_play(gameplay, highscore)
+        game_play(gameplay, highscore, gamemode)
     if gameplay == False:
         pg.quit()
         sys.exit()
 # --- Game Play Loop ---
-def game_play(gameplay, highscore):
+def game_play(gameplay, highscore, gamemode):
     """
     Game loop that runs during actual gameplay.
     Args:
         gameplay: Loop if true
         highscore: Check and include previous attempt highscores if applicable
+        gamemode: Check gamemode (single or two player)
     """
     # --- Initial Setup ---
     # --- Sprite Groups Generation ---
@@ -600,6 +694,7 @@ def game_play(gameplay, highscore):
     plife_list = pg.sprite.Group()
     powerup_list = pg.sprite.Group()
     # --- Player/Player Life Generation ---
+    #player1 creation
     ship = Ship()
     player_list.add(ship)
     interactive_objects.add(ship)
@@ -615,6 +710,25 @@ def game_play(gameplay, highscore):
     noninteractive_objects.add(playerlife1)
     noninteractive_objects.add(playerlife2)
     noninteractive_objects.add(playerlife3)
+    #player2 creation in 2 player mode
+    if gamemode == 2:
+        ship.rect.x, ship.rect.y = 125, 600 #shifts player1 position to accommodate player2
+        ship2 = Ship()
+        ship2.rect.x, ship2.rect.y = 275, 600
+        player_list.add(ship2)
+        interactive_objects.add(ship2)
+        player2life1 = Playerlife()
+        player2life2 = Playerlife()
+        player2life3 = Playerlife()
+        player2life1.rect.x, playerlife1.rect.y = 420, 40
+        player2life2.rect.x, playerlife2.rect.y = 440, 40
+        player2life3.rect.x, playerlife3.rect.y = 460, 40
+        plife_list.add(player2life1)
+        plife_list.add(player2life2)
+        plife_list.add(player2life3)
+        noninteractive_objects.add(player2life1)
+        noninteractive_objects.add(player2life2)
+        noninteractive_objects.add(player2life3)
     # --- Time/Score Generation ---
     score = 0
     time_elapsed_since_e1spawn = 0
@@ -633,12 +747,28 @@ def game_play(gameplay, highscore):
                 gameplay = False
         # --- Player Management ---
         keypressed = pg.key.get_pressed()
-        if keypressed[pg.K_LEFT]: #player movement to left
-            ship.moveLeft(5)
-        if keypressed[pg.K_RIGHT]: #player movement to right
-            ship.moveRight(5)
-        if keypressed[pg.K_SPACE] and ship.health > 0: #player shoot
-            ship.shoot()
+        #single player controls
+        if gamemode == 1:
+            if keypressed[pg.K_LEFT]: #player1 movement to left
+                ship.moveLeft(5)
+            if keypressed[pg.K_RIGHT]: #player1 movement to right
+                ship.moveRight(5)
+            if keypressed[pg.K_SPACE] and ship.health > 0: #player1 shoot
+                ship.shoot()
+        #two player controls
+        if gamemode == 2:
+            if keypressed[pg.K_LEFT]: #player1 movement to left
+                ship.moveLeft(5)
+            if keypressed[pg.K_RIGHT]: #player1 movement to right
+                ship.moveRight(5)
+            if keypressed[pg.K_KP3] and ship.health > 0: #player1 shoot
+                ship.shoot()
+            if keypressed[pg.K_a]: #player2 movement to left
+                ship2.moveLeft(5)
+            if keypressed[pg.K_d]: #player2 movement to right
+                ship2.moveRight(5)
+            if keypressed[pg.K_SPACE] and ship2.health > 0: #player2 shoot
+                ship2.shoot()
         # --- Score Increment Management ---
         time_elapsed_since_score += dt #score increase
         if time_elapsed_since_score > 49:
@@ -708,13 +838,13 @@ def game_play(gameplay, highscore):
                 interactive_objects.add(smallex)
                 enemy.health -= 1
         # --- Player Collision with Enemy ---
-        for ship in player_list:
-            playerhits = pg.sprite.spritecollide(ship, enemy_list, True)
+        for player in player_list:
+            playerhits = pg.sprite.spritecollide(player, enemy_list, True)
             if playerhits:
                 pex = Pex()
-                pex.rect.center = ship.rect.center
+                pex.rect.center = player.rect.center
                 interactive_objects.add(pex)
-                ship.health -= 1
+                player.health -= 1
         # --- Player Collision with Power Up ---
         for powerup in powerup_list:
             poweruphits = pg.sprite.spritecollide(powerup, player_list, False)
@@ -722,11 +852,22 @@ def game_play(gameplay, highscore):
                 ship.consume()
                 ship.powerupvalue = 1
                 powerup.kill()
+                #player2 gets powerup too in 2 player mode
+                if gamemode == 2:
+                    ship2.consume()
+                    ship2.powerupvalue = 1
+                    powerup.kill()
             elif poweruphits and powerup.id == 2:
                 ship.consume()
                 ship.powerupvalue = 2
                 powerup.kill()
+                #player2 gets powerup too in 2 player mode
+                if gamemode == 2:
+                    ship2.consume()
+                    ship2.powerupvalue = 2
+                    powerup.kill()
         # --- Player Life Management ---
+        #player1 life management
         if ship.health == 2:
             playerlife1.kill()
         if ship.health == 1:
@@ -734,6 +875,15 @@ def game_play(gameplay, highscore):
         if ship.health <= 0:
             playerlife3.kill()
             ship.kill()
+        #player2 life management in 2 player mode
+        if gamemode == 2:
+            if ship2.health == 2:
+                player2life1.kill()
+            if ship2.health == 1:
+                player2life2.kill()
+            if ship2.health <= 0:
+                player2life3.kill()
+                ship2.kill()
         # --- Updates/Draw The Screen ---
         screen.fill((0,0,0))
         noninteractive_objects.update()
@@ -742,8 +892,11 @@ def game_play(gameplay, highscore):
         interactive_objects.draw(screen)
         plife_list.update()
         plife_list.draw(screen)
-        if ship.powerupvalue > 0: #update powerup if powerup is active
+        if ship.powerupvalue > 0: #update player1 powerup if powerup is active
             ship.powerup()
+        if gamemode == 2:
+            if ship2.powerupvalue > 0: #update player2 powerup if powerup is active
+                ship2.powerup()
         highscoreboard = score_font.render("High Score: " + str(highscore), True, white)
         scoreboard = score_font.render("Score: " + str(score), True, white)
         screen.blit(scoreboard, (20, 50))
@@ -751,9 +904,14 @@ def game_play(gameplay, highscore):
         pg.display.flip()
         clock.tick(60) #fps
         # --- Game Over Management ---
-        if ship.health <= 0:
-            gameplay = False
-    
+        #gameover condition for single player mode
+        if gamemode == 1:
+            if ship.health <= 0:
+                gameplay = False
+        #gameover condition for 2 player mode
+        if gamemode == 2:
+            if ship.health <= 0 and ship2.health <= 0:
+                gameplay = False
     game_over(score, highscore)
 # --- Game Over Loop ---
 def game_over(score, highscore):
@@ -767,14 +925,14 @@ def game_over(score, highscore):
     while gameover == True: #loop while gameover is still running
         for event in pg.event.get():
             if event.type == pg.QUIT: #quit game
-                gameplay = False
+                gamemodeselect = False
                 gameover = False
             mouse = pg.mouse.get_pos()
             if event.type == pg.MOUSEBUTTONDOWN and 230 > mouse[0] > 80 and 450 > mouse[1] > 400: #restart game
-                gameplay = True
+                gamemodeselect = True
                 gameover = False
             if event.type == pg.MOUSEBUTTONDOWN and 430 > mouse[0] > 280 and 450 > mouse[1] > 400: #quit game
-                gameplay = False
+                gamemodeselect = False
                 gameover = False
         # --- Draw The Screen ---       
         screen.fill((0,0,0))
@@ -794,9 +952,9 @@ def game_over(score, highscore):
     # --- Restart/Quit Management ---
     if score > highscore:
         highscore = score
-    if gameplay == True:
-        game_play(gameplay, highscore)
-    if gameplay == False:
+    if gamemodeselect == True:
+        gamemode_select(gamemodeselect, highscore)
+    if gamemodeselect == False:
         pg.quit()
         sys.exit()
 # --- General Set Up ---
@@ -809,8 +967,10 @@ pg.display.set_caption("SpaceShips!")
 score_font = pg.font.SysFont("Times", 24)
 gameintro_text1_font = pg.font.SysFont("Calibri", 32)
 gameintro_text2_font = pg.font.SysFont("Comic Sans", 72)
-gameintro_instruction_font = pg.font.SysFont("Times", 18)
-gameintro_instruction2_font = pg.font.SysFont("Comic Sans", 28)
+gamemodeselect_text1_font = pg.font.SysFont("Comic Sans", 64)
+gamemodeselect_instruction1_font = pg.font.SysFont("Calibri", 24)
+gamemodeselect_instruction2_font = pg.font.SysFont("Times", 18)
+gamemodeselect_instruction3_font = pg.font.SysFont("Comic Sans", 28)
 gameover_text_font = pg.font.SysFont("Comic Sans", 72)
 gameover_text2_font = pg.font.SysFont("Times", 24)
 gameover_text3_font = pg.font.SysFont("Times", 30)
