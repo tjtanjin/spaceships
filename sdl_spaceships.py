@@ -12,6 +12,9 @@ class Ship(pg.sprite.Sprite):
         self.images.append(pg.image.load('space-image_ship_1.png'))
         self.images.append(pg.image.load('space-image_ship_2.png'))
         self.images.append(pg.image.load('space-image_ship_3.png'))
+        self.images.append(pg.image.load('space-image_ship_4.png'))
+        self.images.append(pg.image.load('space-image_ship_5.png'))
+        self.images.append(pg.image.load('space-image_ship_6.png'))
         self.index = 0
         self.image = self.images[self.index]
         #player position
@@ -26,6 +29,7 @@ class Ship(pg.sprite.Sprite):
         self.time_elapsed_since_pshoot = 0
         self.time_elapsed_since_powerup1 = 0
         self.time_elapsed_since_powerup2 = 0
+        self.time_elapsed_since_powerup4 = 0
     #player update at every frame
     def update(self):
         #player animation update
@@ -40,9 +44,6 @@ class Ship(pg.sprite.Sprite):
             self.rect.x = 0
         #player shoot rate
         self.time_elapsed_since_pshoot += dt
-        #prevent having more current health than max health from powerup3
-        if self.health > 3:
-            self.health = 3
     #player move right
     def moveRight(self, pixels):
         self.rect.x += pixels
@@ -51,67 +52,98 @@ class Ship(pg.sprite.Sprite):
         self.rect.x -= pixels
     #player shoot
     def shoot(self):
-        if self.time_elapsed_since_pshoot >= 160 and self.powerupvalue == 0: #player shoot with no powerup
+        if self.time_elapsed_since_pshoot >= 140 and self.powerupvalue == 0: #player shoot with no powerup
             bullet = Bullet()
-            bullet.rect.x, bullet.rect.y = self.rect.x + 35, self.rect.y
+            bullet.rect.x, bullet.rect.y = self.rect.x + 30, self.rect.y + 10
             interactive_objects.add(bullet)
             bullet_list.add(bullet)
             bullet = Bullet()
-            bullet.rect.x, bullet.rect.y = self.rect.x + 75, self.rect.y
+            bullet.rect.x, bullet.rect.y = self.rect.x + 80, self.rect.y + 10
             interactive_objects.add(bullet)
             bullet_list.add(bullet)
             self.time_elapsed_since_pshoot = 0
-        elif self.time_elapsed_since_pshoot >= 160 and self.powerupvalue == 1: #player shoot with powerup1
+        elif self.time_elapsed_since_pshoot >= 140 and self.powerupvalue == 1: #player shoot with powerup1
             bullet = Bullet()
-            bullet.rect.x, bullet.rect.y = self.rect.x + 35, self.rect.y
+            bullet.rect.x, bullet.rect.y = self.rect.x + 30, self.rect.y + 10
             interactive_objects.add(bullet)
             bullet_list.add(bullet)
             bullet = Bullet()
-            bullet.rect.x, bullet.rect.y = self.rect.x + 75, self.rect.y
+            bullet.rect.x, bullet.rect.y = self.rect.x + 80, self.rect.y + 10
             interactive_objects.add(bullet)
             bullet_list.add(bullet)
             bullet = Bullet()
-            bullet.rect.x, bullet.rect.y = self.rect.x + 55, self.rect.y - 20
+            bullet.rect.x, bullet.rect.y = self.rect.x + 55, self.rect.y - 15
             interactive_objects.add(bullet)
             bullet_list.add(bullet)
             self.time_elapsed_since_pshoot = 0
         elif self.time_elapsed_since_pshoot >= 160 and self.powerupvalue == 2: #player shoot with powerup2
             pbullet2 = Pbullet2()
-            pbullet2.rect.x, pbullet2.rect.y = self.rect.x + 35, self.rect.y - 635
+            pbullet2.rect.x, pbullet2.rect.y = self.rect.x + 31, self.rect.y - 620
             interactive_objects.add(pbullet2)
             opbullet_list.add(pbullet2)
             pbullet2 = Pbullet2()
-            pbullet2.rect.x, pbullet2.rect.y = self.rect.x + 75, self.rect.y - 635
+            pbullet2.rect.x, pbullet2.rect.y = self.rect.x + 81, self.rect.y - 620
             interactive_objects.add(pbullet2)
             opbullet_list.add(pbullet2)
             self.time_elapsed_since_pshoot = 0
+        elif self.time_elapsed_since_pshoot >= 140 and self.powerupvalue == 4: #player shoot with powerup4
+            bullet = Bullet()
+            bullet.rect.x, bullet.rect.y = self.rect.x + 30, self.rect.y + 10
+            interactive_objects.add(bullet)
+            bullet_list.add(bullet)
+            bullet = Bullet()
+            bullet.rect.x, bullet.rect.y = self.rect.x + 80, self.rect.y + 10
+            interactive_objects.add(bullet)
+            bullet_list.add(bullet)
+            self.time_elapsed_since_pshoot = 0
+            pbullet4 = Pbullet4()
+            pbullet4.rect.x, pbullet4.rect.y = self.rect.x + 15, self.rect.y + 22
+            interactive_objects.add(pbullet4)
+            bullet_list.add(pbullet4)
+            pbullet4 = Pbullet4()
+            pbullet4.rect.x, pbullet4.rect.y = self.rect.x + 95, self.rect.y + 22
+            interactive_objects.add(pbullet4)
+            bullet_list.add(pbullet4)
+            self.time_elapsed_since_pshoot = 0
     #player test shoot (on gamemode select screen)
     def testshoot(self):
-        if self.time_elapsed_since_pshoot >= 160: #player test shoot in gamemode select screen
+        if self.time_elapsed_since_pshoot >= 140: #player test shoot in gamemode select screen
             bullet = Bullet()
-            bullet.rect.x, bullet.rect.y = self.rect.x + 35, self.rect.y
+            bullet.rect.x, bullet.rect.y = self.rect.x + 30, self.rect.y + 10
             test_list.add(bullet)
             bullet = Bullet()
-            bullet.rect.x, bullet.rect.y = self.rect.x + 75, self.rect.y
+            bullet.rect.x, bullet.rect.y = self.rect.x + 80, self.rect.y + 10
             test_list.add(bullet)
             self.time_elapsed_since_pshoot = 0
     #player powerups
     def powerup(self):
         if self.powerupvalue == 1: #powerup1
             self.time_elapsed_since_powerup2 = 0 #reset other active powerups
+            self.time_elapsed_since_powerup4 = 0
             self.time_elapsed_since_powerup1 += dt
-            if self.time_elapsed_since_powerup1 > 10000: #powerup1 duration (10sec)
+            if self.time_elapsed_since_powerup1 > 9000: #powerup1 duration (9sec)
                 self.powerupvalue = 0
                 self.time_elapsed_since_powerup1 = 0
         if self.powerupvalue == 2: #powerup2
             self.time_elapsed_since_powerup1 = 0 #reset other active powerups
+            self.time_elapsed_since_powerup4 = 0
             self.time_elapsed_since_powerup2 += dt
-            if self.time_elapsed_since_powerup2 > 10000: #powerup2 duration (10sec)
+            if self.time_elapsed_since_powerup2 > 7000: #powerup2 duration (7sec)
                 self.powerupvalue = 0
                 self.time_elapsed_since_powerup2 = 0
-    #sound played when player receives powerup
+        if self.powerupvalue == 4: #powerup4
+            self.time_elapsed_since_powerup1 = 0 #reset other active powerups
+            self.time_elapsed_since_powerup2 = 0
+            self.time_elapsed_since_powerup4 += dt
+            if self.time_elapsed_since_powerup4 > 6000: #powerup4 duration (6sec)
+                self.powerupvalue = 0
+                self.time_elapsed_since_powerup4 = 0
+    #sound played when player receives attack powerup
     def consume(self):
-        pg.mixer.Channel(0).play(pg.mixer.Sound('space-sound_powerup1.wav'))
+        pg.mixer.Channel(0).play(pg.mixer.Sound('space-sound_powerup.wav'))
+    #sound played when player receives healthpack
+    def heal(self):
+        pg.mixer.Channel(9).play(pg.mixer.Sound('space-sound_heal.wav'))
 # --- Player 2 Space Ship ---
 #methods inherited from Ship() class with the difference being in sprites
 class Ship2(Ship):
@@ -121,7 +153,12 @@ class Ship2(Ship):
         self.images = []
         self.images.append(pg.image.load('space-image_ship2_1.png'))
         self.images.append(pg.image.load('space-image_ship2_2.png'))
-        self.images.append(pg.image.load('space-image_ship2_3.png'))       
+        self.images.append(pg.image.load('space-image_ship2_3.png'))
+        self.images.append(pg.image.load('space-image_ship2_4.png'))
+        self.images.append(pg.image.load('space-image_ship2_5.png'))
+        self.images.append(pg.image.load('space-image_ship2_6.png'))
+        self.index = 0
+        self.image = self.images[self.index]
 # --- Player Main Bullet ---
 class Bullet(pg.sprite.Sprite):
     def __init__(self):
@@ -130,6 +167,10 @@ class Bullet(pg.sprite.Sprite):
         self.images = []
         self.images.append(pg.image.load('space-image_pbullet_1.png'))
         self.images.append(pg.image.load('space-image_pbullet_2.png'))
+        self.images.append(pg.image.load('space-image_pbullet_3.png'))
+        self.images.append(pg.image.load('space-image_pbullet_4.png'))
+        self.images.append(pg.image.load('space-image_pbullet_5.png'))
+        self.images.append(pg.image.load('space-image_pbullet_6.png'))
         self.index = 0
         self.image = self.images[self.index]
         #player bullet position
@@ -154,23 +195,23 @@ class Pbullet2(pg.sprite.Sprite):
         super(Pbullet2, self).__init__()
         #pbullet2 sprites/animation
         self.images = []
-        self.images.append(pg.transform.scale(pg.image.load('space-image_pbullet2_1.png'), (5, 650)))
-        self.images.append(pg.transform.scale(pg.image.load('space-image_pbullet2_2.png'), (5, 650)))
-        self.images.append(pg.transform.scale(pg.image.load('space-image_pbullet2_3.png'), (5, 650)))
-        self.images.append(pg.transform.scale(pg.image.load('space-image_pbullet2_4.png'), (5, 650)))
-        self.images.append(pg.transform.scale(pg.image.load('space-image_pbullet2_5.png'), (5, 650)))
-        self.images.append(pg.transform.scale(pg.image.load('space-image_pbullet2_6.png'), (5, 650)))
+        self.images.append(pg.transform.scale(pg.image.load('space-image_pbullet2_1.png'), (3, 650)))
+        self.images.append(pg.transform.scale(pg.image.load('space-image_pbullet2_2.png'), (3, 650)))
+        self.images.append(pg.transform.scale(pg.image.load('space-image_pbullet2_3.png'), (3, 650)))
+        self.images.append(pg.transform.scale(pg.image.load('space-image_pbullet2_4.png'), (3, 650)))
+        self.images.append(pg.transform.scale(pg.image.load('space-image_pbullet2_5.png'), (3, 650)))
+        self.images.append(pg.transform.scale(pg.image.load('space-image_pbullet2_6.png'), (3, 650)))
         self.index = 0
         self.image = self.images[self.index]
         #pbullet2  position
         self.rect = self.image.get_rect()
         #pbullet2 specific initial timer set to 0
         self.time_elapsed_since_pshoot2 = 0
-        #pbullet2  sound
-##tobeupdated        pg.mixer.Channel(0).play(pg.mixer.Sound('space-sound_pbullet.wav'))
-    #pbullet2  update at every frame
+        #pbullet2 sound
+        pg.mixer.Channel(6).play(pg.mixer.Sound('space-sound_pbullet2.wav'))
+    #pbullet2 update at every frame
     def update(self):
-        #pbullet2  animation update
+        #pbullet2 animation update
         self.index += 1
         if self.index >= len(self.images):
             self.index = 0
@@ -180,13 +221,43 @@ class Pbullet2(pg.sprite.Sprite):
         if self.time_elapsed_since_pshoot2 > 160:
             self.kill()
             self.time_elapsed_since_pshoot2 = 0
-# --- Player Life Display ---
+# --- Player Power Up 4 Bullet ---
+class Pbullet4(pg.sprite.Sprite):
+    def __init__(self):
+        super(Pbullet4, self).__init__()
+        #pbullet4 sprites/animation
+        self.images = []
+        self.images.append(pg.image.load('space-image_pbullet4_1.png'))
+        self.images.append(pg.image.load('space-image_pbullet4_2.png'))
+        self.images.append(pg.image.load('space-image_pbullet4_3.png'))
+        self.images.append(pg.image.load('space-image_pbullet4_4.png'))
+        self.images.append(pg.image.load('space-image_pbullet4_5.png'))
+        self.images.append(pg.image.load('space-image_pbullet4_6.png'))
+        self.index = 0
+        self.image = self.images[self.index]
+        #pbullet4 position
+        self.rect = self.image.get_rect()
+        #pbullet4 sound
+        pg.mixer.Channel(1).play(pg.mixer.Sound('space-sound_pbullet.wav'))
+    #pbullet4 update at every frame
+    def update(self):
+        #pbullet4 animation update
+        self.index += 1
+        if self.index >= len(self.images):
+            self.index = 0
+        self.image = self.images[self.index]
+        #pbullet4 speed/direction
+        self.rect.y -= 7
+        #pbullet4 killed once it leaves screen
+        if self.rect.y < 0:
+            self.kill()
+# --- Player 1 Life Display ---
 class Playerlife(pg.sprite.Sprite):
     def __init__(self):
         super(Playerlife, self).__init__()
         #player life display sprites/animation
         self.images = []
-        self.images.append(pg.transform.scale(pg.image.load('space-image_plife.png'), (36, 36)))
+        self.images.append(pg.transform.scale(pg.image.load('space-image_plife.png'), (60, 36)))
         self.index = 0
         self.image = self.images[self.index]
         #player life display position
@@ -194,523 +265,17 @@ class Playerlife(pg.sprite.Sprite):
     #player life display update at every frame
     def update(self):
         None
-# --- Boss Enemy-Related Classes ---
-# --- Boss Enemy 1 ---
-class Bossenemy1(pg.sprite.Sprite):
+# --- Player 2 Life Display ---
+#methods inherited from Playerlife() class with the difference being in sprites
+class Player2life(Playerlife):
     def __init__(self):
-        super(Bossenemy1, self).__init__()
-        #bossenemy1 sprites/animation
+        super(Player2life, self).__init__()
+        #player2 life display sprites/animation
         self.images = []
-        self.images.append(pg.transform.scale(pg.image.load('space-image_boss1_1.png'), (417, 227)))
-        self.images.append(pg.transform.scale(pg.image.load('space-image_boss1_2.png'), (417, 227)))
-        self.images.append(pg.transform.scale(pg.image.load('space-image_boss1_3.png'), (417, 227)))
-        self.images.append(pg.transform.scale(pg.image.load('space-image_boss1_4.png'), (417, 227)))
-        self.images.append(pg.transform.scale(pg.image.load('space-image_boss1_5.png'), (417, 227)))
-        self.images.append(pg.transform.scale(pg.image.load('space-image_boss1_6.png'), (417, 227)))
-        self.images.append(pg.transform.scale(pg.image.load('space-image_boss1_7.png'), (417, 227)))
-        self.images.append(pg.transform.scale(pg.image.load('space-image_boss1_8.png'), (417, 227)))
-        self.images.append(pg.transform.scale(pg.image.load('space-image_boss1_9.png'), (417, 227)))
-        self.images.append(pg.transform.scale(pg.image.load('space-image_boss1_10.png'), (417, 227)))
-        self.images.append(pg.transform.scale(pg.image.load('space-image_boss1_11.png'), (417, 227)))
-        self.images.append(pg.transform.scale(pg.image.load('space-image_boss1_12.png'), (417, 227)))
-        self.images.append(pg.transform.scale(pg.image.load('space-image_boss1_13.png'), (417, 227)))
-        self.images.append(pg.transform.scale(pg.image.load('space-image_boss1_14.png'), (417, 227)))
-        self.images.append(pg.transform.scale(pg.image.load('space-image_boss1_15.png'), (417, 227)))
-        self.images.append(pg.transform.scale(pg.image.load('space-image_boss1_16.png'), (417, 227)))
-        self.index = random.randint(0,7) #randomize starting index(frame) to play
-        self.image = self.images[self.index]
-        #bossenemy1 position
-        self.rect = self.image.get_rect()
-        #bossenemy1 specific initial timer set to 0
-        self.time_elapsed_since_b1shoot1 = 0
-        self.time_elapsed_since_b1shoot2 = 0
-        self.time_elapsed_since_b1spawnenemy = 0
-        #bossenemy1 initial health count
-        self.initialhealth = 150
-        #bossenemy1 actual health count
-        self.health = 150
-        #bossenemy1 id
-        self.id = 100
-        #bossenemy1 movement
-        change_value = [-1,1]
-        self.changex = random.choice(change_value)
-        self.changey = 1
-    #bossenemy1 update at every frame
-    def update(self):
-        #bossenemy1 animation update
-        self.index += 1
-        if self.health > self.initialhealth*0.46:
-            if self.index >= 7:
-                self.index = 0
-        if self.health <= self.initialhealth*0.46:
-            if self.index >= 15:
-                self.index = 8
-        self.image = self.images[self.index]
-        #bossenemy1 speed/direction
-        if self.rect.y < 0:
-            self.rect.y += self.changey
-        self.rect.x += self.changex
-        self.rect.y += self.changey
-        if self.rect.x <= 0 or self.rect.x >= 83:
-            self.changex *= -1
-        if self.rect.y == 0 or self.rect.y == 80:
-            self.changey *= -1
-        #bossenemy1 shoot
-        self.time_elapsed_since_b1shoot1 += dt
-        if self.time_elapsed_since_b1shoot1 > 650: #4 side guns
-            b1bullet = Ebullet()
-            b1bullet.rect.x, b1bullet.rect.y = self.rect.x + 74, self.rect.y + 200
-            interactive_objects.add(b1bullet)
-            enemy_list.add(b1bullet)
-            b1bullet = Ebullet()
-            b1bullet.rect.x, b1bullet.rect.y = self.rect.x + 122, self.rect.y + 200
-            interactive_objects.add(b1bullet)
-            enemy_list.add(b1bullet)
-            b1bullet = Ebullet()
-            b1bullet.rect.x, b1bullet.rect.y = self.rect.x + 328, self.rect.y + 200
-            interactive_objects.add(b1bullet)
-            enemy_list.add(b1bullet)
-            b1bullet = Ebullet()
-            b1bullet.rect.x, b1bullet.rect.y = self.rect.x + 280, self.rect.y + 200
-            interactive_objects.add(b1bullet)
-            enemy_list.add(b1bullet)
-            self.time_elapsed_since_b1shoot1 = 0
-        self.time_elapsed_since_b1shoot2 += dt
-        if self.health <= self.initialhealth*0.46 and self.time_elapsed_since_b1shoot2 > 160: #main gun triggered below certain health
-            b1bullet2 = Ebullet2()
-            b1bullet2.rect.x, b1bullet2.rect.y = self.rect.x + 202, self.rect.y + 220
-            interactive_objects.add(b1bullet2)
-            enemyopbullet_list.add(b1bullet2)
-            self.time_elapsed_since_b1shoot2 = 0
-        #bossenemy1 spawn enemies
-        self.time_elapsed_since_b1spawnenemy += dt
-        if self.time_elapsed_since_b1spawnenemy > 6500:
-            e2 = Enemy2() #spawn enemy2
-            e2.rect.x = 65
-            e2.rect.y = 50
-            interactive_objects.add(e2)
-            enemy_list.add(e2)
-            e2 = Enemy2() #spawn enemy2
-            e2.rect.x = 352
-            e2.rect.y = 50
-            interactive_objects.add(e2)
-            enemy_list.add(e2)
-            self.time_elapsed_since_b1spawnenemy = 0
-        #bossenemy1 killed once health below 0
-        if self.health <= 0:
-            self.kill()
-    #bossenemy1 spawn
-    def spawn(self):
-        self.rect.x = 41.5
-        self.rect.y = -225
-        interactive_objects.add(self)
-        bossenemy_list.add(self)
-# --- Boss Enemy 2 ---
-#methods inherited from Bossenemy1() class with the difference being in health, bullet speed and enemy2 spawn speed
-class Bossenemy2(Bossenemy1):
-    def __init__(self):
-        super(Bossenemy2, self).__init__()
-        #bossenemy2 initial health count
-        self.initialhealth = 175
-        #bossenemy2 actual health count
-        self.health = 175
-    def update(self):
-        #bossenemy2 animation update
-        self.index += 1
-        if self.health > self.initialhealth*0.46:
-            if self.index >= 7:
-                self.index = 0
-        if self.health <= self.initialhealth*0.46:
-            if self.index >= 15:
-                self.index = 8
-        self.image = self.images[self.index]
-        #bossenemy2 speed/direction
-        if self.rect.y < 0:
-            self.rect.y += self.changey
-        self.rect.x += self.changex
-        self.rect.y += self.changey
-        if self.rect.x <= 0 or self.rect.x >= 83:
-            self.changex *= -1
-        if self.rect.y == 0 or self.rect.y == 80:
-            self.changey *= -1
-        #bossenemy2 shoot
-        self.time_elapsed_since_b1shoot1 += dt
-        if self.time_elapsed_since_b1shoot1 > 500: #4 side guns
-            b1bullet = Ebullet()
-            b1bullet.rect.x, b1bullet.rect.y = self.rect.x + 74, self.rect.y + 200
-            interactive_objects.add(b1bullet)
-            enemy_list.add(b1bullet)
-            b1bullet = Ebullet()
-            b1bullet.rect.x, b1bullet.rect.y = self.rect.x + 122, self.rect.y + 200
-            interactive_objects.add(b1bullet)
-            enemy_list.add(b1bullet)
-            b1bullet = Ebullet()
-            b1bullet.rect.x, b1bullet.rect.y = self.rect.x + 328, self.rect.y + 200
-            interactive_objects.add(b1bullet)
-            enemy_list.add(b1bullet)
-            b1bullet = Ebullet()
-            b1bullet.rect.x, b1bullet.rect.y = self.rect.x + 280, self.rect.y + 200
-            interactive_objects.add(b1bullet)
-            enemy_list.add(b1bullet)
-            self.time_elapsed_since_b1shoot1 = 0
-        self.time_elapsed_since_b1shoot2 += dt
-        if self.health <= self.initialhealth*0.46 and self.time_elapsed_since_b1shoot2 > 160: #main gun triggered below certain health
-            b1bullet2 = Ebullet2()
-            b1bullet2.rect.x, b1bullet2.rect.y = self.rect.x + 202, self.rect.y + 220
-            interactive_objects.add(b1bullet2)
-            enemyopbullet_list.add(b1bullet2)
-            self.time_elapsed_since_b1shoot2 = 0
-        #bossenemy2 spawn enemies
-        self.time_elapsed_since_b1spawnenemy += dt
-        if self.time_elapsed_since_b1spawnenemy > 5000:
-            e2 = Enemy2() #spawn enemy2
-            e2.rect.x = 65
-            e2.rect.y = 50
-            interactive_objects.add(e2)
-            enemy_list.add(e2)
-            e2 = Enemy2() #spawn enemy2
-            e2.rect.x = 352
-            e2.rect.y = 50
-            interactive_objects.add(e2)
-            enemy_list.add(e2)
-            self.time_elapsed_since_b1spawnenemy = 0
-        #bossenemy2 killed once health below 0
-        if self.health <= 0:
-            self.kill()
-# --- Boss Enemy 3 ---
-#methods inherited from Bossenemy1() class with the difference being in health, bullet speed and enemy2 spawn speed
-class Bossenemy3(Bossenemy1):
-    def __init__(self):
-        super(Bossenemy3, self).__init__()
-        #bossenemy3 initial health count
-        self.initialhealth = 200
-        #bossenemy3 actual health count
-        self.health = 200
-    def update(self):
-        #bossenemy3 animation update
-        self.index += 1
-        if self.health > self.initialhealth*0.46:
-            if self.index >= 7:
-                self.index = 0
-        if self.health <= self.initialhealth*0.46:
-            if self.index >= 15:
-                self.index = 8
-        self.image = self.images[self.index]
-        #bossenemy3 speed/direction
-        if self.rect.y < 0:
-            self.rect.y += self.changey
-        self.rect.x += self.changex
-        self.rect.y += self.changey
-        if self.rect.x <= 0 or self.rect.x >= 83:
-            self.changex *= -1
-        if self.rect.y == 0 or self.rect.y == 80:
-            self.changey *= -1
-        #bossenemy3 shoot
-        self.time_elapsed_since_b1shoot1 += dt
-        if self.time_elapsed_since_b1shoot1 > 400: #4 side guns
-            b1bullet = Ebullet()
-            b1bullet.rect.x, b1bullet.rect.y = self.rect.x + 74, self.rect.y + 200
-            interactive_objects.add(b1bullet)
-            enemy_list.add(b1bullet)
-            b1bullet = Ebullet()
-            b1bullet.rect.x, b1bullet.rect.y = self.rect.x + 122, self.rect.y + 200
-            interactive_objects.add(b1bullet)
-            enemy_list.add(b1bullet)
-            b1bullet = Ebullet()
-            b1bullet.rect.x, b1bullet.rect.y = self.rect.x + 328, self.rect.y + 200
-            interactive_objects.add(b1bullet)
-            enemy_list.add(b1bullet)
-            b1bullet = Ebullet()
-            b1bullet.rect.x, b1bullet.rect.y = self.rect.x + 280, self.rect.y + 200
-            interactive_objects.add(b1bullet)
-            enemy_list.add(b1bullet)
-            self.time_elapsed_since_b1shoot1 = 0
-        self.time_elapsed_since_b1shoot2 += dt
-        if self.health <= self.initialhealth*0.46 and self.time_elapsed_since_b1shoot2 > 160: #main gun triggered below certain health
-            b1bullet2 = Ebullet2()
-            b1bullet2.rect.x, b1bullet2.rect.y = self.rect.x + 202, self.rect.y + 220
-            interactive_objects.add(b1bullet2)
-            enemyopbullet_list.add(b1bullet2)
-            self.time_elapsed_since_b1shoot2 = 0
-        #bossenemy3 spawn enemies
-        self.time_elapsed_since_b1spawnenemy += dt
-        if self.time_elapsed_since_b1spawnenemy > 4000:
-            e2 = Enemy2() #spawn enemy2
-            e2.rect.x = 65
-            e2.rect.y = 50
-            interactive_objects.add(e2)
-            enemy_list.add(e2)
-            e2 = Enemy2() #spawn enemy2
-            e2.rect.x = 352
-            e2.rect.y = 50
-            interactive_objects.add(e2)
-            enemy_list.add(e2)
-            self.time_elapsed_since_b1spawnenemy = 0
-        #bossenemy3 killed once health below 0
-        if self.health <= 0:
-            self.kill()
-# --- Boss Enemy 4 ---
-#methods inherited from Bossenemy1() class with the difference being in health, bullet speed and enemy2 spawn speed
-class Bossenemy4(Bossenemy1):
-    def __init__(self):
-        super(Bossenemy4, self).__init__()
-        #bossenemy4 initial health count
-        self.initialhealth = 225
-        #bossenemy4 actual health count
-        self.health = 225
-    def update(self):
-        #bossenemy4 animation update
-        self.index += 1
-        if self.health > self.initialhealth*0.46:
-            if self.index >= 7:
-                self.index = 0
-        if self.health <= self.initialhealth*0.46:
-            if self.index >= 15:
-                self.index = 8
-        self.image = self.images[self.index]
-        #bossenemy4 speed/direction
-        if self.rect.y < 0:
-            self.rect.y += self.changey
-        self.rect.x += self.changex
-        self.rect.y += self.changey
-        if self.rect.x <= 0 or self.rect.x >= 83:
-            self.changex *= -1
-        if self.rect.y == 0 or self.rect.y == 80:
-            self.changey *= -1
-        #bossenemy4 shoot
-        self.time_elapsed_since_b1shoot1 += dt
-        if self.time_elapsed_since_b1shoot1 > 300: #4 side guns
-            b1bullet = Ebullet()
-            b1bullet.rect.x, b1bullet.rect.y = self.rect.x + 74, self.rect.y + 200
-            interactive_objects.add(b1bullet)
-            enemy_list.add(b1bullet)
-            b1bullet = Ebullet()
-            b1bullet.rect.x, b1bullet.rect.y = self.rect.x + 122, self.rect.y + 200
-            interactive_objects.add(b1bullet)
-            enemy_list.add(b1bullet)
-            b1bullet = Ebullet()
-            b1bullet.rect.x, b1bullet.rect.y = self.rect.x + 328, self.rect.y + 200
-            interactive_objects.add(b1bullet)
-            enemy_list.add(b1bullet)
-            b1bullet = Ebullet()
-            b1bullet.rect.x, b1bullet.rect.y = self.rect.x + 280, self.rect.y + 200
-            interactive_objects.add(b1bullet)
-            enemy_list.add(b1bullet)
-            self.time_elapsed_since_b1shoot1 = 0
-        self.time_elapsed_since_b1shoot2 += dt
-        if self.health <= self.initialhealth*0.46 and self.time_elapsed_since_b1shoot2 > 160: #main gun triggered below certain health
-            b1bullet2 = Ebullet2()
-            b1bullet2.rect.x, b1bullet2.rect.y = self.rect.x + 202, self.rect.y + 220
-            interactive_objects.add(b1bullet2)
-            enemyopbullet_list.add(b1bullet2)
-            self.time_elapsed_since_b1shoot2 = 0
-        #bossenemy4 spawn enemies
-        self.time_elapsed_since_b1spawnenemy += dt
-        if self.time_elapsed_since_b1spawnenemy > 3000:
-            e2 = Enemy2() #spawn enemy2
-            e2.rect.x = 65
-            e2.rect.y = 50
-            interactive_objects.add(e2)
-            enemy_list.add(e2)
-            e2 = Enemy2() #spawn enemy2
-            e2.rect.x = 352
-            e2.rect.y = 50
-            interactive_objects.add(e2)
-            enemy_list.add(e2)
-            self.time_elapsed_since_b1spawnenemy = 0
-        #bossenemy4 killed once health below 0
-        if self.health <= 0:
-            self.kill()
-# --- Standard Enemy-Related Classes ---
-# --- Enemy 1 ---
-class Enemy1(pg.sprite.Sprite):
-    def __init__(self):
-        super(Enemy1, self).__init__()
-        #enemy1 sprites/animation
-        self.images = []
-        self.images.append(pg.transform.scale(pg.image.load('space-image_e1_1.png'), (87, 90)))
-        self.images.append(pg.transform.scale(pg.image.load('space-image_e1_2.png'), (87, 90)))
-        self.images.append(pg.transform.scale(pg.image.load('space-image_e1_3.png'), (87, 90)))
-        self.images.append(pg.transform.scale(pg.image.load('space-image_e1_4.png'), (87, 90)))
-        self.index = random.randint(0,3) #randomize starting index(frame) to play
-        self.image = self.images[self.index]
-        #enemy1 position
-        self.rect = self.image.get_rect()
-        #enemy1 initial health count
-        self.health = 2
-        #enemy1 id
-        self.id = 1
-    #enemy1 update at every frame
-    def update(self):
-        #enemy1 animation update  
-        self.index += 1
-        if self.index >= len(self.images):
-            self.index = 0
-        self.image = self.images[self.index]
-        #enemy1 speed/direction
-        self.rect.y += 3
-        #enemy1 killed once it leaves screen
-        if self.rect.y > screen_y:
-            self.kill()
-        #enemy1 killed once health below 0
-        if self.health <= 0:
-            self.kill()
-    #enemy1 spawn
-    def spawn(self):
-        self.rect.x = random.randint(-20, 450)
-        self.rect.y = -120
-        interactive_objects.add(self)
-        enemy_list.add(self)
-# --- Enemy 2 ---
-class Enemy2(pg.sprite.Sprite):
-    def __init__(self):
-        super(Enemy2, self).__init__()
-        #enemy2 sprites/animation
-        self.images = []
-        self.images.append(pg.transform.scale(pg.image.load('space-image_e2_1.png'), (76, 100)))
-        self.images.append(pg.transform.scale(pg.image.load('space-image_e2_2.png'), (76, 100)))
-        self.images.append(pg.transform.scale(pg.image.load('space-image_e2_3.png'), (76, 100)))
-        self.images.append(pg.transform.scale(pg.image.load('space-image_e2_4.png'), (76, 100)))
-        self.index = random.randint(0,3) #randomize starting index(frame) to play
-        self.image = self.images[self.index]
-        #enemy2 position
-        self.rect = self.image.get_rect()
-        #enemy2 specific initial timer set to 0
-        self.time_elapsed_since_e2shoot = 0
-        #enemy2 initial health count
-        self.health = 3
-        #enemy2 id
-        self.id = 2
-    #enemy2 update at every frame
-    def update(self):
-        #enemy2 animation update  
-        self.index += 1
-        if self.index >= len(self.images):
-            self.index = 0
-        self.image = self.images[self.index]
-        #enemy2 speed/direction
-        self.rect.y += 2
-        #enemy2 killed once it leaves screen
-        if self.rect.y > screen_y:
-            self.kill()
-        #enemy2 shoot
-        self.time_elapsed_since_e2shoot += dt
-        if self.time_elapsed_since_e2shoot > 400:
-            e2bullet = Ebullet()
-            e2bullet.rect.x, e2bullet.rect.y = self.rect.x + 30, self.rect.y + 80
-            interactive_objects.add(e2bullet)
-            enemy_list.add(e2bullet)
-            self.time_elapsed_since_e2shoot = 0
-        #enemy2 killed once health below 0
-        if self.health <= 0:
-            self.kill()
-    #enemy2 spawn
-    def spawn(self):
-        self.rect.x = random.randint(-20, 450)
-        self.rect.y = -120
-        interactive_objects.add(self)
-        enemy_list.add(self)
-# --- Small Meteor ---
-class Smallmeteor(pg.sprite.Sprite):
-    def __init__(self):
-        #small meteor sprites/animation
-        super(Smallmeteor, self).__init__()
-        self.images = []
-        sprite_size = random.randint(32, 64) #randomize small meteor size
-        self.images.append(pg.transform.scale(pg.image.load('space-image_meteor_small_1.png'), (sprite_size, sprite_size)))
-        self.images.append(pg.transform.scale(pg.image.load('space-image_meteor_small_2.png'), (sprite_size, sprite_size)))
-        self.images.append(pg.transform.scale(pg.image.load('space-image_meteor_small_3.png'), (sprite_size, sprite_size)))
-        self.images.append(pg.transform.scale(pg.image.load('space-image_meteor_small_4.png'), (sprite_size, sprite_size)))
-        self.index = random.randint(0,3) #randomize starting index(frame) to play
-        self.image = self.images[self.index]
-        #small meteor position
-        self.rect = self.image.get_rect()
-        self.x = 200
-        self.y = 200
-        #small meteor id
-        self.id = 0
-    #small meteor update at every frame
-    def update(self):
-        #small meteor animation update        
-        self.index += 1
-        if self.index >= len(self.images):
-            self.index = 0
-        self.image = self.images[self.index]
-        #small meteor speed/direction
-        self.rect.y += 4
-        #small meteor killed once it leaves screen
-        if self.rect.y > screen_y:
-            self.kill()
-    #small meteor spawn
-    def spawn(self):
-        self.rect.x = random.randint(-20, 450)
-        self.rect.y = -100    
-        interactive_objects.add(self)
-        enemy_list.add(self)
-# --- Enemy Bullet Classes ---
-class Ebullet(pg.sprite.Sprite):
-    def __init__(self):
-        super(Ebullet, self).__init__()
-        #ebullet sprites/animation
-        self.images = []
-        self.images.append(pg.transform.scale(pg.image.load('space-image_ebullet_1.png'), (16, 32)))
-        self.images.append(pg.transform.scale(pg.image.load('space-image_ebullet_2.png'), (16, 32)))
-        self.images.append(pg.transform.scale(pg.image.load('space-image_ebullet_3.png'), (16, 32)))
-        self.images.append(pg.transform.scale(pg.image.load('space-image_ebullet_4.png'), (16, 32)))
+        self.images.append(pg.transform.scale(pg.image.load('space-image_p2life.png'), (60, 36)))
         self.index = 0
         self.image = self.images[self.index]
-        #ebullet position
-        self.rect = self.image.get_rect()
-        #ebullet id
-        self.id = 2.1
-        #ebullet sound
-##        pg.mixer.Channel(0).play(pg.mixer.Sound('space-sound_pbullet.wav'))
-    #ebullet update at every frame
-    def update(self):
-        #ebullet animation update
-        self.index += 1
-        if self.index >= len(self.images):
-            self.index = 0
-        self.image = self.images[self.index]
-        #ebullet speed/direction
-        self.rect.y += 7
-        #ebullet killed once it leaves screen
-        if self.rect.y > screen_y:
-            self.kill()
-class Ebullet2(pg.sprite.Sprite):
-    def __init__(self):
-        super(Ebullet2, self).__init__()
-        #ebullet2 sprites/animation
-        self.images = []
-        self.images.append(pg.transform.scale(pg.image.load('space-image_ebullet2_1.png'), (5, 650)))
-        self.images.append(pg.transform.scale(pg.image.load('space-image_ebullet2_2.png'), (5, 650)))
-        self.images.append(pg.transform.scale(pg.image.load('space-image_ebullet2_3.png'), (5, 650)))
-        self.images.append(pg.transform.scale(pg.image.load('space-image_ebullet2_4.png'), (5, 650)))
-        self.images.append(pg.transform.scale(pg.image.load('space-image_ebullet2_5.png'), (5, 650)))
-        self.images.append(pg.transform.scale(pg.image.load('space-image_ebullet2_6.png'), (5, 650)))
-        self.index = 0
-        self.image = self.images[self.index]
-        #ebullet2  position
-        self.rect = self.image.get_rect()
-        #ebullet2 id
-        self.id = 2.2
-        #ebullet2 specific initial timer set to 0
-        self.time_elapsed_since_ebullet2shoot = 0
-        #ebullet2  sound
-##tobeupdated        pg.mixer.Channel(0).play(pg.mixer.Sound('space-sound_pbullet.wav'))
-    #ebullet2  update at every frame
-    def update(self):
-        #ebullet2  animation update
-        self.index += 1
-        if self.index >= len(self.images):
-            self.index = 0
-        self.image = self.images[self.index]
-        #ebullet2 removed every 160 ticks to simulate tracing laser
-        self.time_elapsed_since_ebullet2shoot += dt
-        if self.time_elapsed_since_ebullet2shoot > 160:
-            self.kill()
-            self.time_elapsed_since_ebullet2shoot = 0
-# --- Visual Effects Classes ---
+# --- Power Up Classes ---
 # --- PowerUp 1 ---
 class Powerup1(pg.sprite.Sprite):
     def __init__(self):
@@ -812,6 +377,830 @@ class Powerup3(pg.sprite.Sprite):
         self.rect.y = -100    
         interactive_objects.add(self)
         powerup_list.add(self)
+# --- PowerUp 4 ---
+class Powerup4(pg.sprite.Sprite):
+    def __init__(self):
+        #powerup4 sprites/animation
+        super(Powerup4, self).__init__()
+        self.images = []
+        self.images.append(pg.transform.scale(pg.image.load('space-image_powerup4_1.png'), (40, 40)))
+        self.images.append(pg.transform.scale(pg.image.load('space-image_powerup4_2.png'), (40, 40)))
+        self.images.append(pg.transform.scale(pg.image.load('space-image_powerup4_3.png'), (40, 40)))
+        self.images.append(pg.transform.scale(pg.image.load('space-image_powerup4_4.png'), (40, 40)))
+        self.index = random.randint(0,3) #randomize starting index(frame) to play
+        self.image = self.images[self.index]
+        #powerup4 position
+        self.rect = self.image.get_rect()
+        #powerup4 id
+        self.id = 4
+    #powerup4 update at every frame
+    def update(self):
+        #powerup4 animation update        
+        self.index += 1
+        if self.index >= len(self.images):
+            self.index = 0
+        self.image = self.images[self.index]
+        #powerup4 speed/direction
+        self.rect.y += 6
+        #powerup4 killed once it leaves screen
+        if self.rect.y > screen_y:
+            self.kill()
+    #powerup4 spawn
+    def spawn(self):
+        self.rect.x = random.randint(0, 500)
+        self.rect.y = -100    
+        interactive_objects.add(self)
+        powerup_list.add(self)
+# --- Boss Enemy-Related Classes ---
+# --- Boss Enemy 1 ---
+class Bossenemy1(pg.sprite.Sprite):
+    def __init__(self):
+        super(Bossenemy1, self).__init__()
+        #bossenemy1 sprites/animation
+        self.images = []
+        self.images.append(pg.transform.scale(pg.image.load('space-image_boss1_1.png'), (417, 227)))
+        self.images.append(pg.transform.scale(pg.image.load('space-image_boss1_2.png'), (417, 227)))
+        self.images.append(pg.transform.scale(pg.image.load('space-image_boss1_3.png'), (417, 227)))
+        self.images.append(pg.transform.scale(pg.image.load('space-image_boss1_4.png'), (417, 227)))
+        self.images.append(pg.transform.scale(pg.image.load('space-image_boss1_5.png'), (417, 227)))
+        self.images.append(pg.transform.scale(pg.image.load('space-image_boss1_6.png'), (417, 227)))
+        self.images.append(pg.transform.scale(pg.image.load('space-image_boss1_7.png'), (417, 227)))
+        self.images.append(pg.transform.scale(pg.image.load('space-image_boss1_8.png'), (417, 227)))
+        self.images.append(pg.transform.scale(pg.image.load('space-image_boss1_9.png'), (417, 227)))
+        self.images.append(pg.transform.scale(pg.image.load('space-image_boss1_10.png'), (417, 227)))
+        self.images.append(pg.transform.scale(pg.image.load('space-image_boss1_11.png'), (417, 227)))
+        self.images.append(pg.transform.scale(pg.image.load('space-image_boss1_12.png'), (417, 227)))
+        self.images.append(pg.transform.scale(pg.image.load('space-image_boss1_13.png'), (417, 227)))
+        self.images.append(pg.transform.scale(pg.image.load('space-image_boss1_14.png'), (417, 227)))
+        self.images.append(pg.transform.scale(pg.image.load('space-image_boss1_15.png'), (417, 227)))
+        self.images.append(pg.transform.scale(pg.image.load('space-image_boss1_16.png'), (417, 227)))
+        self.index = random.randint(0,7) #randomize starting index(frame) to play
+        self.image = self.images[self.index]
+        #bossenemy1 position
+        self.rect = self.image.get_rect()
+        #bossenemy1 specific initial timer set to 0
+        self.time_elapsed_since_b1shoot1 = 0
+        self.time_elapsed_since_b1shoot2 = 0
+        self.time_elapsed_since_b1spawnenemy = 0
+        #bossenemy1 initial health count
+        self.initialhealth = 150
+        #bossenemy1 actual health count
+        self.health = 150
+        #bossenemy1 id
+        self.id = 100
+        #bossenemy1 movement
+        change_value = [-1,1]
+        self.changex = random.choice(change_value)
+        self.changey = 1
+    #bossenemy1 update at every frame
+    def update(self):
+        #bossenemy1 animation update
+        self.index += 1
+        if self.health > self.initialhealth*0.46:
+            if self.index >= 7:
+                self.index = 0
+        if self.health <= self.initialhealth*0.46:
+            if self.index >= 15:
+                self.index = 8
+        self.image = self.images[self.index]
+        #bossenemy1 speed/direction
+        if self.rect.y < 0:
+            self.rect.y += self.changey
+        self.rect.x += self.changex
+        self.rect.y += self.changey
+        if self.rect.x <= 0 or self.rect.x >= 83:
+            self.changex *= -1
+        if self.rect.y == 0 or self.rect.y == 80:
+            self.changey *= -1
+        #bossenemy1 shoot
+        self.time_elapsed_since_b1shoot1 += dt
+        if self.time_elapsed_since_b1shoot1 > 650: #4 side guns
+            b1bullet = Ebullet()
+            b1bullet.rect.x, b1bullet.rect.y = self.rect.x + 74, self.rect.y + 200
+            interactive_objects.add(b1bullet)
+            enemy_list.add(b1bullet)
+            b1bullet = Ebullet()
+            b1bullet.rect.x, b1bullet.rect.y = self.rect.x + 122, self.rect.y + 200
+            interactive_objects.add(b1bullet)
+            enemy_list.add(b1bullet)
+            b1bullet = Ebullet()
+            b1bullet.rect.x, b1bullet.rect.y = self.rect.x + 328, self.rect.y + 200
+            interactive_objects.add(b1bullet)
+            enemy_list.add(b1bullet)
+            b1bullet = Ebullet()
+            b1bullet.rect.x, b1bullet.rect.y = self.rect.x + 280, self.rect.y + 200
+            interactive_objects.add(b1bullet)
+            enemy_list.add(b1bullet)
+            self.time_elapsed_since_b1shoot1 = 0
+        self.time_elapsed_since_b1shoot2 += dt
+        if self.health <= self.initialhealth*0.33 and self.time_elapsed_since_b1shoot2 > 160: #main gun triggered below certain health
+            b1bullet2 = Ebullet2()
+            b1bullet2.rect.x, b1bullet2.rect.y = self.rect.x + 202, self.rect.y + 220
+            interactive_objects.add(b1bullet2)
+            enemyopbullet_list.add(b1bullet2)
+            self.time_elapsed_since_b1shoot2 = 0
+        #bossenemy1 spawn enemies
+        self.time_elapsed_since_b1spawnenemy += dt
+        if self.time_elapsed_since_b1spawnenemy > 6500:
+            e2 = Enemy2() #spawn enemy2
+            e2.rect.x = 65
+            e2.rect.y = 50
+            interactive_objects.add(e2)
+            enemy_list.add(e2)
+            e2 = Enemy2() #spawn enemy2
+            e2.rect.x = 352
+            e2.rect.y = 50
+            interactive_objects.add(e2)
+            enemy_list.add(e2)
+            self.time_elapsed_since_b1spawnenemy = 0
+        #bossenemy1 killed once health below 0
+        if self.health <= 0:
+            self.kill()
+    #bossenemy1 spawn
+    def spawn(self):
+        self.rect.x = 41.5
+        self.rect.y = -225
+        interactive_objects.add(self)
+        bossenemy_list.add(self)
+# --- Boss Enemy 2 ---
+#methods inherited from Bossenemy1() class with the difference being in health, bullet speed and enemy2 spawn speed
+class Bossenemy2(Bossenemy1):
+    def __init__(self):
+        super(Bossenemy2, self).__init__()
+        #bossenemy2 initial health count
+        self.initialhealth = 175
+        #bossenemy2 actual health count
+        self.health = 175
+        #bossenemy2 set initial timer
+        self.time_elapsed_since_b2spawn = 0 #regeneration timer
+    def update(self):
+        #bossenemy2 animation update
+        self.index += 1
+        if self.health > self.initialhealth*0.46:
+            if self.index >= 7:
+                self.index = 0
+        if self.health <= self.initialhealth*0.46:
+            if self.index >= 15:
+                self.index = 8
+        self.image = self.images[self.index]
+        #bossenemy2 speed/direction
+        if self.rect.y < 0:
+            self.rect.y += self.changey
+        self.rect.x += self.changex
+        self.rect.y += self.changey
+        if self.rect.x <= 0 or self.rect.x >= 83:
+            self.changex *= -1
+        if self.rect.y == 0 or self.rect.y == 80:
+            self.changey *= -1
+        #bossenemy2 shoot
+        self.time_elapsed_since_b1shoot1 += dt
+        if self.time_elapsed_since_b1shoot1 > 500: #4 side guns
+            b1bullet = Ebullet()
+            b1bullet.rect.x, b1bullet.rect.y = self.rect.x + 74, self.rect.y + 200
+            interactive_objects.add(b1bullet)
+            enemy_list.add(b1bullet)
+            b1bullet = Ebullet()
+            b1bullet.rect.x, b1bullet.rect.y = self.rect.x + 122, self.rect.y + 200
+            interactive_objects.add(b1bullet)
+            enemy_list.add(b1bullet)
+            b1bullet = Ebullet()
+            b1bullet.rect.x, b1bullet.rect.y = self.rect.x + 328, self.rect.y + 200
+            interactive_objects.add(b1bullet)
+            enemy_list.add(b1bullet)
+            b1bullet = Ebullet()
+            b1bullet.rect.x, b1bullet.rect.y = self.rect.x + 280, self.rect.y + 200
+            interactive_objects.add(b1bullet)
+            enemy_list.add(b1bullet)
+            self.time_elapsed_since_b1shoot1 = 0
+        self.time_elapsed_since_b1shoot2 += dt
+        if self.health <= self.initialhealth*0.33 and self.time_elapsed_since_b1shoot2 > 160: #main gun triggered below certain health
+            b1bullet2 = Ebullet2()
+            b1bullet2.rect.x, b1bullet2.rect.y = self.rect.x + 202, self.rect.y + 220
+            interactive_objects.add(b1bullet2)
+            enemyopbullet_list.add(b1bullet2)
+            self.time_elapsed_since_b1shoot2 = 0
+        #bossenemy2 spawn enemies
+        self.time_elapsed_since_b1spawnenemy += dt
+        if self.time_elapsed_since_b1spawnenemy > 6000:
+            e3 = Enemy3() #spawn enemy3
+            e3.rect.x = 65
+            e3.rect.y = 50
+            interactive_objects.add(e3)
+            enemy_list.add(e3)
+            e3 = Enemy3() #spawn enemy3
+            e3.rect.x = 352
+            e3.rect.y = 50
+            interactive_objects.add(e3)
+            enemy_list.add(e3)
+            self.time_elapsed_since_b1spawnenemy = 0
+        #bossenemy2 regenerate
+        self.time_elapsed_since_b2spawn += dt
+        if self.time_elapsed_since_b2spawn > 95:
+            self.health += 0.2
+            self.time_elapsed_since_b2spawn = 0
+        #bossenemy2 killed once health below 0
+        if self.health <= 0:
+            self.kill()
+# --- Boss Enemy 3 ---
+#methods inherited from Bossenemy1() class with the difference being in health, bullet speed and enemy2 spawn speed
+class Bossenemy3(Bossenemy1):
+    def __init__(self):
+        super(Bossenemy3, self).__init__()
+        #bossenemy3 initial health count
+        self.initialhealth = 200
+        #bossenemy3 actual health count
+        self.health = 200
+        #bossenemy3 set initial timer
+        self.time_elapsed_since_b3spawn = 0 #regeneration timer
+    def update(self):
+        #bossenemy3 animation update
+        self.index += 1
+        if self.health > self.initialhealth*0.46:
+            if self.index >= 7:
+                self.index = 0
+        if self.health <= self.initialhealth*0.46:
+            if self.index >= 15:
+                self.index = 8
+        self.image = self.images[self.index]
+        #bossenemy3 speed/direction
+        if self.rect.y < 0:
+            self.rect.y += self.changey
+        self.rect.x += self.changex
+        self.rect.y += self.changey
+        if self.rect.x <= 0 or self.rect.x >= 83:
+            self.changex *= -1
+        if self.rect.y == 0 or self.rect.y == 80:
+            self.changey *= -1
+        #bossenemy3 shoot
+        self.time_elapsed_since_b1shoot1 += dt
+        if self.time_elapsed_since_b1shoot1 > 400: #4 side guns
+            b1bullet = Ebullet()
+            b1bullet.rect.x, b1bullet.rect.y = self.rect.x + 74, self.rect.y + 200
+            interactive_objects.add(b1bullet)
+            enemy_list.add(b1bullet)
+            b1bullet = Ebullet()
+            b1bullet.rect.x, b1bullet.rect.y = self.rect.x + 122, self.rect.y + 200
+            interactive_objects.add(b1bullet)
+            enemy_list.add(b1bullet)
+            b1bullet = Ebullet()
+            b1bullet.rect.x, b1bullet.rect.y = self.rect.x + 328, self.rect.y + 200
+            interactive_objects.add(b1bullet)
+            enemy_list.add(b1bullet)
+            b1bullet = Ebullet()
+            b1bullet.rect.x, b1bullet.rect.y = self.rect.x + 280, self.rect.y + 200
+            interactive_objects.add(b1bullet)
+            enemy_list.add(b1bullet)
+            self.time_elapsed_since_b1shoot1 = 0
+        self.time_elapsed_since_b1shoot2 += dt
+        if self.health <= self.initialhealth*0.33 and self.time_elapsed_since_b1shoot2 > 160: #main gun triggered below certain health
+            b1bullet2 = Ebullet2()
+            b1bullet2.rect.x, b1bullet2.rect.y = self.rect.x + 202, self.rect.y + 220
+            interactive_objects.add(b1bullet2)
+            enemyopbullet_list.add(b1bullet2)
+            self.time_elapsed_since_b1shoot2 = 0
+        #bossenemy3 spawn enemies
+        self.time_elapsed_since_b1spawnenemy += dt
+        if self.time_elapsed_since_b1spawnenemy > 5000:
+            e4 = Enemy4() #spawn enemy4
+            e4.rect.x = 65
+            e4.rect.y = 50
+            interactive_objects.add(e4)
+            enemy_list.add(e4)
+            e4 = Enemy4() #spawn enemy4
+            e4.rect.x = 352
+            e4.rect.y = 50
+            interactive_objects.add(e4)
+            enemy_list.add(e4)
+            self.time_elapsed_since_b1spawnenemy = 0
+        #bossenemy3 regenerate
+        self.time_elapsed_since_b3spawn += dt
+        if self.time_elapsed_since_b3spawn > 95:
+            self.health += 0.5
+            self.time_elapsed_since_b3spawn = 0
+        if self.health > self.initialhealth:
+            self.health = self.initialhealth
+        #bossenemy3 killed once health below 0
+        if self.health <= 0:
+            self.kill()
+# --- Boss Enemy 4 ---
+#methods inherited from Bossenemy1() class with the difference being in health, bullet speed and enemy2 spawn speed
+class Bossenemy4(Bossenemy1):
+    def __init__(self):
+        super(Bossenemy4, self).__init__()
+        #bossenemy4 initial health count
+        self.initialhealth = 225
+        #bossenemy4 actual health count
+        self.health = 225
+        #bossenemy4 set initial timer
+        self.time_elapsed_since_b4spawn = 0 #regeneration timer
+    def update(self):
+        #bossenemy4 animation update
+        self.index += 1
+        if self.health > self.initialhealth*0.46:
+            if self.index >= 7:
+                self.index = 0
+        if self.health <= self.initialhealth*0.46:
+            if self.index >= 15:
+                self.index = 8
+        self.image = self.images[self.index]
+        #bossenemy4 speed/direction
+        if self.rect.y < 0:
+            self.rect.y += self.changey
+        self.rect.x += self.changex
+        self.rect.y += self.changey
+        if self.rect.x <= 0 or self.rect.x >= 83:
+            self.changex *= -1
+        if self.rect.y == 0 or self.rect.y == 80:
+            self.changey *= -1
+        #bossenemy4 shoot
+        self.time_elapsed_since_b1shoot1 += dt
+        if self.time_elapsed_since_b1shoot1 > 300: #4 side guns
+            b1bullet = Ebullet()
+            b1bullet.rect.x, b1bullet.rect.y = self.rect.x + 74, self.rect.y + 200
+            interactive_objects.add(b1bullet)
+            enemy_list.add(b1bullet)
+            b1bullet = Ebullet()
+            b1bullet.rect.x, b1bullet.rect.y = self.rect.x + 122, self.rect.y + 200
+            interactive_objects.add(b1bullet)
+            enemy_list.add(b1bullet)
+            b1bullet = Ebullet()
+            b1bullet.rect.x, b1bullet.rect.y = self.rect.x + 328, self.rect.y + 200
+            interactive_objects.add(b1bullet)
+            enemy_list.add(b1bullet)
+            b1bullet = Ebullet()
+            b1bullet.rect.x, b1bullet.rect.y = self.rect.x + 280, self.rect.y + 200
+            interactive_objects.add(b1bullet)
+            enemy_list.add(b1bullet)
+            self.time_elapsed_since_b1shoot1 = 0
+        self.time_elapsed_since_b1shoot2 += dt
+        if self.health <= self.initialhealth*0.33 and self.time_elapsed_since_b1shoot2 > 160: #main gun triggered below certain health
+            b1bullet2 = Ebullet2()
+            b1bullet2.rect.x, b1bullet2.rect.y = self.rect.x + 202, self.rect.y + 220
+            interactive_objects.add(b1bullet2)
+            enemyopbullet_list.add(b1bullet2)
+            self.time_elapsed_since_b1shoot2 = 0
+        #bossenemy4 spawn enemies
+        self.time_elapsed_since_b1spawnenemy += dt
+        if self.time_elapsed_since_b1spawnenemy > 5000:
+            e3 = Enemy3() #spawn enemy3
+            e3.rect.x = 65
+            e3.rect.y = 50
+            interactive_objects.add(e3)
+            enemy_list.add(e3)
+            e3 = Enemy3() #spawn enemy3
+            e3.rect.x = 352
+            e3.rect.y = 50
+            interactive_objects.add(e3)
+            enemy_list.add(e3)
+            e4 = Enemy4() #spawn enemy4
+            e4.rect.x = 65
+            e4.rect.y = 50
+            interactive_objects.add(e4)
+            enemy_list.add(e4)
+            e4 = Enemy4() #spawn enemy4
+            e4.rect.x = 352
+            e4.rect.y = 50
+            interactive_objects.add(e4)
+            enemy_list.add(e4)
+            self.time_elapsed_since_b1spawnenemy = 0
+        #bossenemy4 regenerate
+        self.time_elapsed_since_b4spawn += dt
+        if self.time_elapsed_since_b4spawn > 95:
+            self.health += 0.8
+            self.time_elapsed_since_b4spawn = 0
+        if self.health > self.initialhealth:
+            self.health = self.initialhealth
+        #bossenemy4 killed once health below 0
+        if self.health <= 0:
+            self.kill()
+class Bossenemy5(Bossenemy1):
+    def __init__(self):
+        super(Bossenemy5, self).__init__()
+        #bossenemy5 initial health count
+        self.initialhealth = 225
+        #bossenemy5 actual health count
+        self.health = 225
+        #bossenemy5 set initial timer
+        self.time_elapsed_since_b5spawn = 0 #regeneration timer
+    def update(self):
+        #bossenemy5 animation update
+        self.index += 1
+        if self.health > self.initialhealth*0.46:
+            if self.index >= 7:
+                self.index = 0
+        if self.health <= self.initialhealth*0.46:
+            if self.index >= 15:
+                self.index = 8
+        self.image = self.images[self.index]
+        #bossenemy5 speed/direction
+        if self.rect.y < 0:
+            self.rect.y += self.changey
+        self.rect.x += self.changex
+        self.rect.y += self.changey
+        if self.rect.x <= 0 or self.rect.x >= 83:
+            self.changex *= -1
+        if self.rect.y == 0 or self.rect.y == 80:
+            self.changey *= -1
+        #bossenemy5 shoot
+        self.time_elapsed_since_b1shoot1 += dt
+        if self.time_elapsed_since_b1shoot1 > 200: #4 side guns
+            b1bullet = Ebullet()
+            b1bullet.rect.x, b1bullet.rect.y = self.rect.x + 74, self.rect.y + 200
+            interactive_objects.add(b1bullet)
+            enemy_list.add(b1bullet)
+            b1bullet = Ebullet()
+            b1bullet.rect.x, b1bullet.rect.y = self.rect.x + 122, self.rect.y + 200
+            interactive_objects.add(b1bullet)
+            enemy_list.add(b1bullet)
+            b1bullet = Ebullet()
+            b1bullet.rect.x, b1bullet.rect.y = self.rect.x + 328, self.rect.y + 200
+            interactive_objects.add(b1bullet)
+            enemy_list.add(b1bullet)
+            b1bullet = Ebullet()
+            b1bullet.rect.x, b1bullet.rect.y = self.rect.x + 280, self.rect.y + 200
+            interactive_objects.add(b1bullet)
+            enemy_list.add(b1bullet)
+            self.time_elapsed_since_b1shoot1 = 0
+        self.time_elapsed_since_b1shoot2 += dt
+        if self.health <= self.initialhealth*0.33 and self.time_elapsed_since_b1shoot2 > 160: #main gun triggered below certain health
+            b1bullet2 = Ebullet2()
+            b1bullet2.rect.x, b1bullet2.rect.y = self.rect.x + 202, self.rect.y + 220
+            interactive_objects.add(b1bullet2)
+            enemyopbullet_list.add(b1bullet2)
+            self.time_elapsed_since_b1shoot2 = 0
+        #bossenemy5 spawn enemies
+        self.time_elapsed_since_b1spawnenemy += dt
+        if self.time_elapsed_since_b1spawnenemy > 5000:
+            e2 = Enemy2() #spawn enemy2
+            e2.rect.x = 65
+            e2.rect.y = 50
+            interactive_objects.add(e2)
+            enemy_list.add(e2)
+            e2 = Enemy2() #spawn enemy2
+            e2.rect.x = 352
+            e2.rect.y = 50
+            interactive_objects.add(e2)
+            enemy_list.add(e2)
+            e3 = Enemy3() #spawn enemy3
+            e3.rect.x = 65
+            e3.rect.y = 50
+            interactive_objects.add(e3)
+            enemy_list.add(e3)
+            e3 = Enemy3() #spawn enemy3
+            e3.rect.x = 352
+            e3.rect.y = 50
+            interactive_objects.add(e3)
+            enemy_list.add(e3)
+            e4 = Enemy4() #spawn enemy4
+            e4.rect.x = 65
+            e4.rect.y = 50
+            interactive_objects.add(e4)
+            enemy_list.add(e4)
+            e4 = Enemy4() #spawn enemy4
+            e4.rect.x = 352
+            e4.rect.y = 50
+            interactive_objects.add(e4)
+            enemy_list.add(e4)
+            self.time_elapsed_since_b1spawnenemy = 0
+        #bossenemy5 regenerate
+        self.time_elapsed_since_b5spawn += dt
+        if self.time_elapsed_since_b5spawn > 95:
+            self.health += 1.0
+            self.time_elapsed_since_b5spawn = 0
+        if self.health > self.initialhealth:
+            self.health = self.initialhealth
+        #bossenemy5 killed once health below 0
+        if self.health <= 0:
+            self.kill()
+# --- Standard Enemy-Related Classes ---
+# --- Enemy 1 ---
+class Enemy1(pg.sprite.Sprite):
+    def __init__(self):
+        super(Enemy1, self).__init__()
+        #enemy1 sprites/animation
+        self.images = []
+        self.images.append(pg.transform.scale(pg.image.load('space-image_e1_1.png'), (87, 90)))
+        self.images.append(pg.transform.scale(pg.image.load('space-image_e1_2.png'), (87, 90)))
+        self.images.append(pg.transform.scale(pg.image.load('space-image_e1_3.png'), (87, 90)))
+        self.images.append(pg.transform.scale(pg.image.load('space-image_e1_4.png'), (87, 90)))
+        self.images.append(pg.transform.scale(pg.image.load('space-image_e1_5.png'), (87, 90)))
+        self.images.append(pg.transform.scale(pg.image.load('space-image_e1_6.png'), (87, 90)))
+        self.index = random.randint(0,5) #randomize starting index(frame) to play
+        self.image = self.images[self.index]
+        #enemy1 position
+        self.rect = self.image.get_rect()
+        #enemy1 initial health count
+        self.health = 2
+        #enemy1 id
+        self.id = 1
+    #enemy1 update at every frame
+    def update(self):
+        #enemy1 animation update  
+        self.index += 1
+        if self.index >= len(self.images):
+            self.index = 0
+        self.image = self.images[self.index]
+        #enemy1 speed/direction
+        self.rect.y += 5
+        #enemy1 killed once it leaves screen
+        if self.rect.y > screen_y:
+            self.kill()
+        #enemy1 killed once health below 0
+        if self.health <= 0:
+            self.kill()
+    #enemy1 spawn
+    def spawn(self):
+        self.rect.x = random.randint(-20, 450)
+        self.rect.y = -120
+        interactive_objects.add(self)
+        enemy_list.add(self)
+# --- Enemy 2 ---
+class Enemy2(pg.sprite.Sprite):
+    def __init__(self):
+        super(Enemy2, self).__init__()
+        #enemy2 sprites/animation
+        self.images = []
+        self.images.append(pg.transform.scale(pg.image.load('space-image_e2_1.png'), (76, 100)))
+        self.images.append(pg.transform.scale(pg.image.load('space-image_e2_2.png'), (76, 100)))
+        self.images.append(pg.transform.scale(pg.image.load('space-image_e2_3.png'), (76, 100)))
+        self.images.append(pg.transform.scale(pg.image.load('space-image_e2_4.png'), (76, 100)))
+        self.images.append(pg.transform.scale(pg.image.load('space-image_e2_5.png'), (76, 100)))
+        self.images.append(pg.transform.scale(pg.image.load('space-image_e2_6.png'), (76, 100)))
+        self.index = random.randint(0,5) #randomize starting index(frame) to play
+        self.image = self.images[self.index]
+        #enemy2 position
+        self.rect = self.image.get_rect()
+        #enemy2 specific initial timer set to 0
+        self.time_elapsed_since_e2shoot = 0
+        #enemy2 initial health count
+        self.health = 3
+        #enemy2 id
+        self.id = 2
+    #enemy2 update at every frame
+    def update(self):
+        #enemy2 animation update  
+        self.index += 1
+        if self.index >= len(self.images):
+            self.index = 0
+        self.image = self.images[self.index]
+        #enemy2 speed/direction
+        self.rect.y += 3
+        #enemy2 killed once it leaves screen
+        if self.rect.y > screen_y:
+            self.kill()
+        #enemy2 shoot
+        self.time_elapsed_since_e2shoot += dt
+        if self.time_elapsed_since_e2shoot > 550:
+            e2bullet = Ebullet()
+            e2bullet.rect.x, e2bullet.rect.y = self.rect.x + 30, self.rect.y + 80
+            interactive_objects.add(e2bullet)
+            enemy_list.add(e2bullet)
+            self.time_elapsed_since_e2shoot = 0
+        #enemy2 killed once health below 0
+        if self.health <= 0:
+            self.kill()
+    #enemy2 spawn
+    def spawn(self):
+        self.rect.x = random.randint(-20, 450)
+        self.rect.y = -120
+        interactive_objects.add(self)
+        enemy_list.add(self)
+# --- Enemy 3 ---
+class Enemy3(pg.sprite.Sprite):
+    def __init__(self):
+        super(Enemy3, self).__init__()
+        #enemy3 sprites/animation
+        self.images = []
+        self.images.append(pg.transform.scale(pg.image.load('space-image_e3_1.png'), (90, 90)))
+        self.images.append(pg.transform.scale(pg.image.load('space-image_e3_2.png'), (90, 90)))
+        self.images.append(pg.transform.scale(pg.image.load('space-image_e3_3.png'), (90, 90)))
+        self.images.append(pg.transform.scale(pg.image.load('space-image_e3_4.png'), (90, 90)))
+        self.images.append(pg.transform.scale(pg.image.load('space-image_e3_5.png'), (90, 90)))
+        self.images.append(pg.transform.scale(pg.image.load('space-image_e3_6.png'), (90, 90)))
+        self.index = random.randint(0,5) #randomize starting index(frame) to play
+        self.image = self.images[self.index]
+        #enemy3 position
+        self.rect = self.image.get_rect()
+        #enemy3 specific initial timer set to 0
+        self.time_elapsed_since_e3shoot = 0
+        #enemy3 initial health count
+        self.health = 4
+        #enemy3 id
+        self.id = 3
+    #enemy3 update at every frame
+    def update(self):
+        #enemy3 animation update  
+        self.index += 1
+        if self.index >= len(self.images):
+            self.index = 0
+        self.image = self.images[self.index]
+        #enemy3 speed/direction
+        self.rect.y += 4
+        #enemy3 killed once it leaves screen
+        if self.rect.y > screen_y:
+            self.kill()
+        #enemy3 shoot
+        self.time_elapsed_since_e3shoot += dt
+        if self.time_elapsed_since_e3shoot > 750:
+            e3bullet = Ebullet()
+            e3bullet.rect.x, e3bullet.rect.y = self.rect.x + 28, self.rect.y + 60
+            interactive_objects.add(e3bullet)
+            enemy_list.add(e3bullet)
+            self.time_elapsed_since_e2shoot = 0
+            e3bullet = Ebullet()
+            e3bullet.rect.x, e3bullet.rect.y = self.rect.x + 45, self.rect.y + 60
+            interactive_objects.add(e3bullet)
+            enemy_list.add(e3bullet)
+            self.time_elapsed_since_e3shoot = 0
+        #enemy3 killed once health below 0
+        if self.health <= 0:
+            self.kill()
+    #enemy3 spawn
+    def spawn(self):
+        self.rect.x = random.randint(-20, 450)
+        self.rect.y = -120
+        interactive_objects.add(self)
+        enemy_list.add(self)
+# --- Enemy 4 ---
+class Enemy4(pg.sprite.Sprite):
+    def __init__(self):
+        super(Enemy4, self).__init__()
+        #enemy4 sprites/animation
+        self.images = []
+        self.images.append(pg.transform.scale(pg.image.load('space-image_e4_1.png'), (76, 100)))
+        self.images.append(pg.transform.scale(pg.image.load('space-image_e4_2.png'), (76, 100)))
+        self.images.append(pg.transform.scale(pg.image.load('space-image_e4_3.png'), (76, 100)))
+        self.images.append(pg.transform.scale(pg.image.load('space-image_e4_4.png'), (76, 100)))
+        self.images.append(pg.transform.scale(pg.image.load('space-image_e4_5.png'), (76, 100)))
+        self.images.append(pg.transform.scale(pg.image.load('space-image_e4_6.png'), (76, 100)))
+        self.images.append(pg.transform.scale(pg.image.load('space-image_e4_7.png'), (76, 100)))
+        self.images.append(pg.transform.scale(pg.image.load('space-image_e4_8.png'), (76, 100)))
+        self.images.append(pg.transform.scale(pg.image.load('space-image_e4_9.png'), (76, 100)))
+        self.images.append(pg.transform.scale(pg.image.load('space-image_e4_10.png'), (76, 100)))
+        self.images.append(pg.transform.scale(pg.image.load('space-image_e4_11.png'), (76, 100)))
+        self.images.append(pg.transform.scale(pg.image.load('space-image_e4_12.png'), (76, 100)))
+        self.images.append(pg.transform.scale(pg.image.load('space-image_e4_13.png'), (76, 100)))
+        self.images.append(pg.transform.scale(pg.image.load('space-image_e4_14.png'), (76, 100)))
+        self.images.append(pg.transform.scale(pg.image.load('space-image_e4_15.png'), (76, 100)))
+        self.images.append(pg.transform.scale(pg.image.load('space-image_e4_16.png'), (76, 100)))
+        self.images.append(pg.transform.scale(pg.image.load('space-image_e4_17.png'), (76, 100)))
+        self.images.append(pg.transform.scale(pg.image.load('space-image_e4_18.png'), (76, 100)))
+        self.index = random.randint(0,5) #randomize starting index(frame) to play
+        self.image = self.images[self.index]
+        #enemy4 position
+        self.rect = self.image.get_rect()
+        #enemy4 specific initial timer set to 0
+        self.time_elapsed_since_e4spawn = 0
+        self.time_elapsed_since_e4shoot = 0
+        self.time_elapsed_since_e4shoot2 = 0
+        #enemy4 initial health count
+        self.health = 5
+        #enemy4 id
+        self.id = 4
+    #enemy4 update at every frame
+    def update(self):
+        #enemy4 animation update  
+        self.index += 1
+        #time since enemy4 spawned (to trigger warning for main gun)
+        self.time_elapsed_since_e4spawn += dt
+        if self.time_elapsed_since_e4spawn <= 1500:
+            if self.index >= 5:
+                self.index = 0
+        if self.time_elapsed_since_e4spawn > 1500:
+            if self.index >= 17:
+                self.index = 6
+        self.image = self.images[self.index]
+        #enemy4 speed/direction
+        self.rect.y += 2
+        #enemy4 killed once it leaves screen
+        if self.rect.y > screen_y:
+            self.kill()
+        #enemy4 shoot
+        self.time_elapsed_since_e4shoot += dt
+        if self.time_elapsed_since_e4shoot > 450:
+            e4bullet = Ebullet()
+            e4bullet.rect.x, e4bullet.rect.y = self.rect.x + 42, self.rect.y + 80
+            interactive_objects.add(e4bullet)
+            enemy_list.add(e4bullet)
+            self.time_elapsed_since_e4shoot = 0
+        #enemy shoots laser after a period of time
+        self.time_elapsed_since_e4shoot2 += dt
+        if self.time_elapsed_since_e4spawn > 2750 and self.time_elapsed_since_e4shoot2 > 160:
+            e4bullet2 = Ebullet2()
+            e4bullet2.rect.x, e4bullet2.rect.y = self.rect.x + 36, self.rect.y + 100
+            interactive_objects.add(e4bullet2)
+            enemyopbullet_list.add(e4bullet2)
+            self.time_elapsed_since_e4shoot2 = 0
+        #enemy4 killed once health below 0
+        if self.health <= 0:
+            self.kill()
+    #enemy4 spawn
+    def spawn(self):
+        self.rect.x = random.randint(-20, 450)
+        self.rect.y = -120
+        interactive_objects.add(self)
+        enemy_list.add(self)
+# --- Small Meteor ---
+class Smallmeteor(pg.sprite.Sprite):
+    def __init__(self):
+        #small meteor sprites/animation
+        super(Smallmeteor, self).__init__()
+        self.images = []
+        sprite_size = random.randint(32, 64) #randomize small meteor size
+        self.images.append(pg.transform.scale(pg.image.load('space-image_meteor_small_1.png'), (sprite_size, sprite_size)))
+        self.images.append(pg.transform.scale(pg.image.load('space-image_meteor_small_2.png'), (sprite_size, sprite_size)))
+        self.images.append(pg.transform.scale(pg.image.load('space-image_meteor_small_3.png'), (sprite_size, sprite_size)))
+        self.images.append(pg.transform.scale(pg.image.load('space-image_meteor_small_4.png'), (sprite_size, sprite_size)))
+        self.index = random.randint(0,3) #randomize starting index(frame) to play
+        self.image = self.images[self.index]
+        #small meteor position
+        self.rect = self.image.get_rect()
+        self.x = 200
+        self.y = 200
+        #small meteor id
+        self.id = 0
+    #small meteor update at every frame
+    def update(self):
+        #small meteor animation update        
+        self.index += 1
+        if self.index >= len(self.images):
+            self.index = 0
+        self.image = self.images[self.index]
+        #small meteor speed/direction
+        self.rect.y += 6
+        #small meteor killed once it leaves screen
+        if self.rect.y > screen_y:
+            self.kill()
+    #small meteor spawn
+    def spawn(self):
+        self.rect.x = random.randint(-20, 450)
+        self.rect.y = -100    
+        interactive_objects.add(self)
+        enemy_list.add(self)
+# --- Enemy Bullet Classes ---
+class Ebullet(pg.sprite.Sprite):
+    def __init__(self):
+        super(Ebullet, self).__init__()
+        #ebullet sprites/animation
+        self.images = []
+        self.images.append(pg.transform.scale(pg.image.load('space-image_ebullet_1.png'), (16, 32)))
+        self.images.append(pg.transform.scale(pg.image.load('space-image_ebullet_2.png'), (16, 32)))
+        self.images.append(pg.transform.scale(pg.image.load('space-image_ebullet_3.png'), (16, 32)))
+        self.images.append(pg.transform.scale(pg.image.load('space-image_ebullet_4.png'), (16, 32)))
+        self.index = 0
+        self.image = self.images[self.index]
+        #ebullet position
+        self.rect = self.image.get_rect()
+        #ebullet id
+        self.id = 2.1
+        #ebullet sound
+        pg.mixer.Channel(7).play(pg.mixer.Sound('space-sound_ebullet.wav'))
+    #ebullet update at every frame
+    def update(self):
+        #ebullet animation update
+        self.index += 1
+        if self.index >= len(self.images):
+            self.index = 0
+        self.image = self.images[self.index]
+        #ebullet speed/direction
+        self.rect.y += 7
+        #ebullet killed once it leaves screen
+        if self.rect.y > screen_y:
+            self.kill()
+class Ebullet2(pg.sprite.Sprite):
+    def __init__(self):
+        super(Ebullet2, self).__init__()
+        #ebullet2 sprites/animation
+        self.images = []
+        self.images.append(pg.transform.scale(pg.image.load('space-image_ebullet2_1.png'), (5, 650)))
+        self.images.append(pg.transform.scale(pg.image.load('space-image_ebullet2_2.png'), (5, 650)))
+        self.images.append(pg.transform.scale(pg.image.load('space-image_ebullet2_3.png'), (5, 650)))
+        self.images.append(pg.transform.scale(pg.image.load('space-image_ebullet2_4.png'), (5, 650)))
+        self.images.append(pg.transform.scale(pg.image.load('space-image_ebullet2_5.png'), (5, 650)))
+        self.images.append(pg.transform.scale(pg.image.load('space-image_ebullet2_6.png'), (5, 650)))
+        self.index = 0
+        self.image = self.images[self.index]
+        #ebullet2  position
+        self.rect = self.image.get_rect()
+        #ebullet2 id
+        self.id = 2.2
+        #ebullet2 specific initial timer set to 0
+        self.time_elapsed_since_ebullet2shoot = 0
+        #ebullet2  sound
+        pg.mixer.Channel(8).play(pg.mixer.Sound('space-sound_ebullet2.wav'))
+    #ebullet2  update at every frame
+    def update(self):
+        #ebullet2  animation update
+        self.index += 1
+        if self.index >= len(self.images):
+            self.index = 0
+        self.image = self.images[self.index]
+        #ebullet2 removed every 160 ticks to simulate tracing laser
+        self.time_elapsed_since_ebullet2shoot += dt
+        if self.time_elapsed_since_ebullet2shoot > 160:
+            self.kill()
+            self.time_elapsed_since_ebullet2shoot = 0
+# --- Visual Effects Classes ---
 # --- Player Explosion ---
 class Pex(pg.sprite.Sprite):
     def __init__(self):
@@ -940,10 +1329,11 @@ class Stars(pg.sprite.Sprite):
             self.index = 0
         self.image = self.images[self.index]
         #stars speed/direction
-        self.rect.y += 2
+        self.rect.y += 1
         #stars killed once it leaves screen
         if self.rect.y > screen_y:
             self.kill()
+    #stars spawn
     def spawn(self):
         self.rect.x = random.randint(-20, 450)
         self.rect.y = -100
@@ -992,6 +1382,7 @@ def game_intro():
     displayship.rect.x, displayship.rect.y = 190, 300
     display_list.add(displayship)
     gameintro = True
+    gamemodeselect = False
     while gameintro == True: #loop while gameintro is still running
         for event in pg.event.get():
             if event.type == pg.QUIT: #quit game
@@ -1153,12 +1544,9 @@ def game_play(gameplay, highscore, gamemode):
         ship2.rect.x, ship2.rect.y = 125, 600
         player_list.add(ship2)
         interactive_objects.add(ship2)
-        player2life1 = Playerlife()
-        player2life2 = Playerlife()
-        player2life3 = Playerlife()
-        player2life1.rect.x, player2life1.rect.y = 420, 40
-        player2life2.rect.x, player2life2.rect.y = 440, 40
-        player2life3.rect.x, player2life3.rect.y = 460, 40
+        player2life1 = Player2life()
+        player2life2 = Player2life()
+        player2life3 = Player2life()
         plife_list.add(player2life1)
         plife_list.add(player2life2)
         plife_list.add(player2life3)
@@ -1167,13 +1555,16 @@ def game_play(gameplay, highscore, gamemode):
         noninteractive_objects.add(player2life3)
     # --- Time/Score Generation ---
     score = 0
-    time_elapsed_since_e1spawn = 0
     time_elapsed_since_smallmeteorspawn = 0
-    time_elapsed_since_starsspawn = 0
+    time_elapsed_since_e1spawn = 0
+    time_elapsed_since_e2spawn = 0
+    time_elapsed_since_e3spawn = 0
+    time_elapsed_since_e4spawn = 0
     time_elapsed_since_powerup1spawn = 0
     time_elapsed_since_powerup2spawn = 0
     time_elapsed_since_powerup3spawn = 0
-    time_elapsed_since_e2spawn = 0
+    time_elapsed_since_powerup4spawn = 0
+    time_elapsed_since_starsspawn = 0
     time_elapsed_since_score = 0
     time_elapsed_since_start = 0
     bosstime = False
@@ -1213,50 +1604,89 @@ def game_play(gameplay, highscore, gamemode):
             time_elapsed_since_score = 0
         # --- Spawn Time/Difficulty Management ---
         time_elapsed_since_start += dt
-        starsspawntime = random.randint(75,105)
+        starsspawntime = random.randint(120,150)
         smallmeteorspawntime = random.randint(600, 750)
-        if time_elapsed_since_start < 60000:
-            powerup1spawntime = random.randint(55000, 60000)
-            powerup2spawntime = random.randint(85000, 90000)
-            powerup3spawntime = random.randint(75000, 80000)
-            e1spawntime = random.randint(900, 1100)
-            e2spawntime = random.randint(3000, 4000)
-        elif time_elapsed_since_start >= 60000 and time_elapsed_since_start < 120000:
-            powerup1spawntime = random.randint(55000, 60000)
-            powerup2spawntime = random.randint(85000, 90000)
-            powerup3spawntime = random.randint(75000, 80000)
-            e1spawntime = random.randint(900, 1000)
+        if time_elapsed_since_start < 35000:
+            powerup1spawntime = random.randint(52500, 57500)
+            powerup2spawntime = random.randint(82500, 87500)
+            powerup3spawntime = random.randint(72500, 77500)
+            powerup4spawntime = random.randint(117500, 127500)
+            e1spawntime = random.randint(800, 900)
+            #nospawn e2spawntime
+            #nospawn e3spawntime
+            #nospawn e4spawntime
+        elif time_elapsed_since_start >= 35000 and time_elapsed_since_start < 95000:
+            powerup1spawntime = random.randint(52500, 57500)
+            powerup2spawntime = random.randint(82500, 87500)
+            powerup3spawntime = random.randint(72500, 77500)
+            powerup4spawntime = random.randint(117500, 127500)
+            e1spawntime = random.randint(750, 850)
             e2spawntime = random.randint(2500, 3500)
-        elif time_elapsed_since_start >= 120000 and time_elapsed_since_start < 200000:
-            powerup1spawntime = random.randint(50000, 55000)
-            powerup2spawntime = random.randint(80000, 85000)
-            powerup3spawntime = random.randint(70000, 75000)
-            e1spawntime = random.randint(750, 900)
+            #nospawn e3spawntime
+            #nospawn e4spawntime
+        elif time_elapsed_since_start >= 95000 and time_elapsed_since_start < 180000: #boss 1 spawns at 130000
+            powerup1spawntime = random.randint(47500, 52500)
+            powerup2spawntime = random.randint(77500, 82500)
+            powerup3spawntime = random.randint(67500, 72500)
+            powerup4spawntime = random.randint(107500, 117500)
+            e1spawntime = random.randint(700, 800)
             e2spawntime = random.randint(2200, 2700)
-        elif time_elapsed_since_start >= 200000 and time_elapsed_since_start < 325000:
-            powerup1spawntime = random.randint(45000, 50000)
-            powerup2spawntime = random.randint(75000, 80000)
-            powerup3spawntime = random.randint(65000, 70000)
+            e3spawntime = random.randint(4500, 5500)
+            #nospawn e4spawntime
+        elif time_elapsed_since_start >= 180000 and time_elapsed_since_start < 300000: #boss2 spawns at 260000
+            powerup1spawntime = random.randint(42500, 47500)
+            powerup2spawntime = random.randint(72500, 77500)
+            powerup3spawntime = random.randint(62500, 67500)
+            powerup4spawntime = random.randint(97500, 107500)
             e1spawntime = random.randint(700, 800)
             e2spawntime = random.randint(2000, 2400)
-        elif time_elapsed_since_start >= 325000 and time_elapsed_since_start < 450000:
-            powerup1spawntime = random.randint(40000, 45000)
-            powerup2spawntime = random.randint(70000, 75000)
-            powerup3spawntime = random.randint(60000, 65000)
+            e3spawntime = random.randint(4250, 5250)
+            e4spawntime = random.randint(7000, 8000)
+        elif time_elapsed_since_start >= 300000 and time_elapsed_since_start < 425000: #boss3 spawns at 380000
+            powerup1spawntime = random.randint(37500, 42500)
+            powerup2spawntime = random.randint(67500, 72500)
+            powerup3spawntime = random.randint(57500, 62500)
+            powerup4spawntime = random.randint(87500, 97500)
             e1spawntime = random.randint(650, 750)
             e2spawntime = random.randint(1800, 2200)
-        elif time_elapsed_since_start >= 450000 and time_elapsed_since_start < 575000:
-            powerup1spawntime = random.randint(35000, 40000)
-            powerup2spawntime = random.randint(65000, 70000)
-            powerup3spawntime = random.randint(55000, 60000)
+            e3spawntime = random.randint(3750, 4750)
+            e4spawntime = random.randint(6000, 7000)
+        elif time_elapsed_since_start >= 425000 and time_elapsed_since_start < 550000: #boss 4 spawns at 500000
+            powerup1spawntime = random.randint(32500, 37500)
+            powerup2spawntime = random.randint(62500, 67500)
+            powerup3spawntime = random.randint(52500, 57500)
+            powerup4spawntime = random.randint(82500, 92500)
             e1spawntime = random.randint(550, 650)
             e2spawntime = random.randint(1600, 2000)
-        if time_elapsed_since_start >= 575000:
+            e3spawntime = random.randint(3000, 4000)
+            e4spawntime = random.randint(5000, 6000)
+        if time_elapsed_since_start >= 550000 and time_elapsed_since_start < 600000:
             powerup1spawntime = random.randint(30000, 35000)
-            powerup2spawntime = random.randint(60000, 65000)
-            powerup3spawntime = random.randint(50000, 55000)
+            powerup2spawntime = random.randint(55000, 60000)
+            powerup3spawntime = random.randint(45000, 50000)
+            powerup4spawntime = random.randint(75000, 85000)
             e1spawntime = random.randint(500, 500)
             e2spawntime = random.randint(1400, 1700)
+            e3spawntime = random.randint(2500, 3000)
+            e4spawntime = random.randint(4000, 4500)
+        if time_elapsed_since_start >= 600000 and time_elapsed_since_start < 650000: #boss 5 spawns at 625000
+            powerup1spawntime = random.randint(30000, 35000)
+            powerup2spawntime = random.randint(55000, 60000)
+            powerup3spawntime = random.randint(45000, 50000)
+            powerup4spawntime = random.randint(75000, 85000)
+            e1spawntime = random.randint(350, 400)
+            e2spawntime = random.randint(1200, 1400)
+            e3spawntime = random.randint(2000, 2200)
+            e4spawntime = random.randint(3000, 3500)
+        if time_elapsed_since_start >= 650000:
+            powerup1spawntime = random.randint(30000, 35000)
+            powerup2spawntime = random.randint(55000, 60000)
+            powerup3spawntime = random.randint(45000, 50000)
+            powerup4spawntime = random.randint(75000, 85000)
+            e1spawntime = random.randint(250, 300)
+            e2spawntime = random.randint(1000, 1000)
+            e3spawntime = random.randint(1200, 1400)
+            e4spawntime = random.randint(2000, 2500)
         # --- Standard Character Spawn Management ---
         time_elapsed_since_starsspawn += dt #stars spawn
         if time_elapsed_since_starsspawn > starsspawntime:
@@ -1268,11 +1698,24 @@ def game_play(gameplay, highscore, gamemode):
             e1 = Enemy1()
             e1.spawn()
             time_elapsed_since_e1spawn = 0
-        time_elapsed_since_e2spawn += dt #enemy 2 spawn
-        if time_elapsed_since_e2spawn > e2spawntime:
-            e2 = Enemy2()
-            e2.spawn()
-            time_elapsed_since_e2spawn = 0
+        if time_elapsed_since_start >= 35000:
+            time_elapsed_since_e2spawn += dt #enemy 2 spawn
+            if time_elapsed_since_e2spawn > e2spawntime:
+                e2 = Enemy2()
+                e2.spawn()
+                time_elapsed_since_e2spawn = 0
+        if time_elapsed_since_start >= 150000:
+            time_elapsed_since_e3spawn += dt #enemy 3 spawn
+            if time_elapsed_since_e3spawn > e3spawntime:
+                e3 = Enemy3()
+                e3.spawn()
+                time_elapsed_since_e3spawn = 0
+        if time_elapsed_since_start >= 220000:
+            time_elapsed_since_e4spawn += dt #enemy 4 spawn
+            if time_elapsed_since_e4spawn > e4spawntime:
+                e4 = Enemy4()
+                e4.spawn()
+                time_elapsed_since_e4spawn = 0 
         time_elapsed_since_smallmeteorspawn += dt #small meteor spawn
         if time_elapsed_since_smallmeteorspawn > smallmeteorspawntime:
             smallmeteor = Smallmeteor()
@@ -1293,21 +1736,30 @@ def game_play(gameplay, highscore, gamemode):
             powerup3 = Powerup3()
             powerup3.spawn()
             time_elapsed_since_powerup3spawn = 0
+        time_elapsed_since_powerup4spawn += dt #powerup3 spawn
+        if time_elapsed_since_powerup4spawn > powerup4spawntime:
+            powerup4 = Powerup4()
+            powerup4.spawn()
+            time_elapsed_since_powerup4spawn = 0
         # --- Boss Enemy Spawn Management ---
-        if time_elapsed_since_start > 172490 and time_elapsed_since_start < 172500: #boss1 spawn
+        if time_elapsed_since_start > 129990 and time_elapsed_since_start < 130000: #boss1 spawn
             bossenemy = Bossenemy1()
             bossenemy.spawn()
             bosstime = True
-        if time_elapsed_since_start > 299980 and time_elapsed_since_start < 300000: #boss2 spawn
+        if time_elapsed_since_start > 259980 and time_elapsed_since_start < 260000: #boss2 spawn
             bossenemy = Bossenemy2()
             bossenemy.spawn()
             bosstime = True
-        if time_elapsed_since_start > 424990 and time_elapsed_since_start < 425000: #boss3 spawn
+        if time_elapsed_since_start > 379980 and time_elapsed_since_start < 380000: #boss3 spawn
             bossenemy = Bossenemy3()
             bossenemy.spawn()
             bosstime = True
-        if time_elapsed_since_start > 549990 and time_elapsed_since_start < 550000: #boss4 spawn
+        if time_elapsed_since_start > 499990 and time_elapsed_since_start < 500000: #boss4 spawn
             bossenemy = Bossenemy4()
+            bossenemy.spawn()
+            bosstime = True
+        if time_elapsed_since_start > 624990 and time_elapsed_since_start < 625000: #boss5 spawn
+            bossenemy = Bossenemy5()
             bossenemy.spawn()
             bosstime = True
         if bosstime == True:
@@ -1315,9 +1767,14 @@ def game_play(gameplay, highscore, gamemode):
             time_elapsed_since_smallmeteorspawn = 0
             time_elapsed_since_e1spawn = 0
             time_elapsed_since_e2spawn = 0
+            time_elapsed_since_e3spawn = 0
+            time_elapsed_since_e4spawn = 0
             hpsurface = pg.Surface((bossenemy.initialhealth*2,20)) #draw boss healthbar
             pg.draw.rect(hpsurface, green, pg.Rect(0, 0, bossenemy.health*2, 20))
             if bossenemy.health <= 0:
+                #spawn one healthpack when boss dies
+                powerup3 = Powerup3()
+                powerup3.spawn()
                 #boss big explosions when dead
                 bossex = Bossex()
                 bossex.rect.x, bossex.rect.y = bossenemy.rect.x + 200, bossenemy.rect.y + 110
@@ -1358,7 +1815,7 @@ def game_play(gameplay, highscore, gamemode):
                 asteroidex.rect.x, asteroidex.rect.y = enemy.rect.x, enemy.rect.y
                 interactive_objects.add(asteroidex)
                 enemy.kill()
-            if (enemyhits or enemyhitsop) and (enemy.id == 1 or enemy.id == 2): #collision with enemy that has health > 1
+            if (enemyhits or enemyhitsop) and (enemy.id == 1 or enemy.id == 2 or enemy.id == 3 or enemy.id == 4): #collision with enemy that has health > 1
                 smallex = Smallex()
                 smallex.rect.x, smallex.rect.y = enemy.rect.x, enemy.rect.y
                 interactive_objects.add(smallex)
@@ -1393,7 +1850,7 @@ def game_play(gameplay, highscore, gamemode):
                 pex = Pex()
                 pex.rect.center = player.rect.center
                 interactive_objects.add(pex)
-                player.health -= 1/30
+                player.health -= 1/30 #full health player dies in 1.5 seconds in laser
         # --- Player Collision with Enemy ---
         for player in player_list:
             playerhits = pg.sprite.spritecollide(player, enemy_list, True)
@@ -1424,47 +1881,64 @@ def game_play(gameplay, highscore, gamemode):
                     ship2.powerupvalue = 2
                     powerup.kill()
             if poweruphits and powerup.id == 3: #player collision with powerup3
-                ship.consume()
-                ship.health += 1
+                ship.heal()
+                if ship.health > 0: #prevent the dead from healing
+                    ship.health += 1
+                if ship.health > 3: #prevent overhealing
+                    ship.health = 3
                 powerup.kill()
                 if gamemode == 2:
+                    ship2.heal()
+                    if ship2.health > 0: #prevent the dead from healing
+                        ship2.health += 1
+                    if ship2.health > 3: #prevent overhealing
+                        ship2.health = 3
+                    powerup.kill()
+            if poweruphits and powerup.id == 4: #player collision with powerup 3
+                ship.consume()
+                ship.powerupvalue = 4
+                powerup.kill()
+                #player2 gets powerup too in 2 player mode
+                if gamemode == 2:
                     ship2.consume()
-                    ship2.health += 1
+                    ship2.powerupvalue = 4
                     powerup.kill()
         # --- Player Life Management ---
-        #player1 life management
+        #player1 life display management
         if ship.health >= 3: #display 3 life
-            playerlife1.rect.x, playerlife1.rect.y = 420, 20
-            playerlife2.rect.x, playerlife2.rect.y = 440, 20
-            playerlife3.rect.x, playerlife3.rect.y = 460, 20
+            playerlife1.rect.x, playerlife1.rect.y = 402, 20
+            playerlife2.rect.x, playerlife2.rect.y = 422, 20
+            playerlife3.rect.x, playerlife3.rect.y = 442, 20
         if ship.health <= 2 and ship.health > 1: #display 2 life
-            playerlife1.rect.x, playerlife1.rect.y = 420, -100
-            playerlife2.rect.x, playerlife2.rect.y = 440, 20
-            playerlife3.rect.x, playerlife3.rect.y = 460, 20
+            playerlife1.rect.x, playerlife1.rect.y = 402, -100
+            playerlife2.rect.x, playerlife2.rect.y = 422, 20
+            playerlife3.rect.x, playerlife3.rect.y = 442, 20
         if ship.health <= 1 and ship.health > 0: #display 1 life
-            playerlife1.rect.x, playerlife1.rect.y = 420, -100
-            playerlife2.rect.x, playerlife2.rect.y = 440, -100
-            playerlife3.rect.x, playerlife3.rect.y = 460, 20
+            playerlife1.rect.x, playerlife1.rect.y = 402, -100
+            playerlife2.rect.x, playerlife2.rect.y = 422, -100
+            playerlife3.rect.x, playerlife3.rect.y = 442, 20
         if ship.health <= 0: #kill player
+            ship.health = 0
             playerlife1.kill()
             playerlife2.kill()
             playerlife3.kill()
             ship.kill()
-        #player2 life management in 2 player mode
+        #player2 life display management in 2 player mode
         if gamemode == 2:
-            if ship.health >= 3: #display 3 life
-                player2life1.rect.x, player2life1.rect.y = 420, 40
-                player2life2.rect.x, player2life2.rect.y = 440, 40
-                player2life3.rect.x, player2life3.rect.y = 460, 40
+            if ship2.health >= 3: #display 3 life
+                player2life1.rect.x, player2life1.rect.y = 402, 45
+                player2life2.rect.x, player2life2.rect.y = 422, 45
+                player2life3.rect.x, player2life3.rect.y = 442, 45
             if ship2.health <= 2 and ship2.health > 1: #display 2 life
-                player2life1.rect.x, player2life1.rect.y = 420, -100
-                player2life2.rect.x, player2life2.rect.y = 440, 40
-                player2life3.rect.x, player2life3.rect.y = 460, 40
+                player2life1.rect.x, player2life1.rect.y = 402, -100
+                player2life2.rect.x, player2life2.rect.y = 422, 45
+                player2life3.rect.x, player2life3.rect.y = 442, 45
             if ship2.health <= 1 and ship2.health > 0: #display 1 life
-                player2life1.rect.x, player2life1.rect.y = 420, -100
-                player2life2.rect.x, player2life2.rect.y = 440, -100
-                player2life3.rect.x, player2life3.rect.y = 460, 40
+                player2life1.rect.x, player2life1.rect.y = 402, -100
+                player2life2.rect.x, player2life2.rect.y = 422, -100
+                player2life3.rect.x, player2life3.rect.y = 442, 45
             if ship2.health <= 0: #kill player
+                ship2.health = 0
                 player2life1.kill()
                 player2life2.kill()
                 player2life3.kill()
@@ -1547,10 +2021,11 @@ def game_over(score, highscore):
 # --- General Set Up ---
 clock = pg.time.Clock()
 dt = 16.666 #1 second approximately 1000 ticks
-screen_x = 500
-screen_y = 700
-screen = pg.display.set_mode((screen_x, screen_y))
-pg.display.set_caption("SpaceShips!")
+screen_x = 500 #screen width
+screen_y = 700 #screen height
+screen = pg.display.set_mode((screen_x, screen_y)) #screen game is played on
+pg.display.set_caption("SpaceShips!") #display at top of screen
+pg.mixer.set_num_channels(12) #12 channels for sound
 # --- Fonts to be used ---
 score_font = pg.font.SysFont("Times", 24)
 gameintro_text1_font = pg.font.SysFont("Calibri", 32)
