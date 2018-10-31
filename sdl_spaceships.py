@@ -598,6 +598,8 @@ class Bossenemy2(Bossenemy1):
         if self.time_elapsed_since_b2spawn > 95:
             self.health += 0.2
             self.time_elapsed_since_b2spawn = 0
+        if self.health > self.initialhealth:
+            self.health = self.initialhealth
         #bossenemy2 killed once health below 0
         if self.health <= 0:
             self.kill()
