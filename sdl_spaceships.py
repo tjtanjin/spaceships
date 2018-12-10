@@ -1453,7 +1453,7 @@ def gamemode_select(gamemodeselect, highscore):
             testship.moveLeft(5)
         if keypressed[pg.K_RIGHT]: #player1 movement to right
             testship.moveRight(5)
-        if keypressed[pg.K_KP3] and testship.health > 0: #player1 shoot
+        if (keypressed[pg.K_KP3] and testship.health > 0) or (keypressed[pg.K_p] and testship.health > 0): #player1 shoot
             testship.testshoot()
         if keypressed[pg.K_a]: #player2 movement to left
             testship2.moveLeft(5)
@@ -1591,7 +1591,7 @@ def game_play(gameplay, highscore, gamemode):
                 ship.moveLeft(5)
             if keypressed[pg.K_RIGHT]: #player1 movement to right
                 ship.moveRight(5)
-            if keypressed[pg.K_KP3] and ship.health > 0: #player1 shoot
+            if (keypressed[pg.K_KP3] and ship.health > 0) or (keypressed[pg.K_p] and ship.health > 0): #player1 shoot
                 ship.shoot()
             if keypressed[pg.K_a]: #player2 movement to left
                 ship2.moveLeft(5)
