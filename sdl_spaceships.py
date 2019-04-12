@@ -9,12 +9,12 @@ class Ship(pg.sprite.Sprite):
         super(Ship, self).__init__()
         #player sprites/animation
         self.images = []
-        self.images.append(pg.image.load('space-image_ship_1.png'))
-        self.images.append(pg.image.load('space-image_ship_2.png'))
-        self.images.append(pg.image.load('space-image_ship_3.png'))
-        self.images.append(pg.image.load('space-image_ship_4.png'))
-        self.images.append(pg.image.load('space-image_ship_5.png'))
-        self.images.append(pg.image.load('space-image_ship_6.png'))
+        self.images.append(pg.image.load('./Images/space-image_ship_1.png'))
+        self.images.append(pg.image.load('./Images/space-image_ship_2.png'))
+        self.images.append(pg.image.load('./Images/space-image_ship_3.png'))
+        self.images.append(pg.image.load('./Images/space-image_ship_4.png'))
+        self.images.append(pg.image.load('./Images/space-image_ship_5.png'))
+        self.images.append(pg.image.load('./Images/space-image_ship_6.png'))
         self.index = 0
         self.image = self.images[self.index]
         #player position
@@ -140,10 +140,10 @@ class Ship(pg.sprite.Sprite):
                 self.time_elapsed_since_powerup4 = 0
     #sound played when player receives attack powerup
     def consume(self):
-        pg.mixer.Channel(0).play(pg.mixer.Sound('space-sound_powerup.wav'))
+        pg.mixer.Channel(0).play(pg.mixer.Sound('./Sound/space-sound_powerup.wav'))
     #sound played when player receives healthpack
     def heal(self):
-        pg.mixer.Channel(9).play(pg.mixer.Sound('space-sound_heal.wav'))
+        pg.mixer.Channel(9).play(pg.mixer.Sound('./Sound/space-sound_heal.wav'))
 # --- Player 2 Space Ship ---
 #methods inherited from Ship() class with the difference being in sprites
 class Ship2(Ship):
@@ -151,12 +151,12 @@ class Ship2(Ship):
         super(Ship2, self).__init__()
         #player2 sprites/animation
         self.images = []
-        self.images.append(pg.image.load('space-image_ship2_1.png'))
-        self.images.append(pg.image.load('space-image_ship2_2.png'))
-        self.images.append(pg.image.load('space-image_ship2_3.png'))
-        self.images.append(pg.image.load('space-image_ship2_4.png'))
-        self.images.append(pg.image.load('space-image_ship2_5.png'))
-        self.images.append(pg.image.load('space-image_ship2_6.png'))
+        self.images.append(pg.image.load('./Images/space-image_ship2_1.png'))
+        self.images.append(pg.image.load('./Images/space-image_ship2_2.png'))
+        self.images.append(pg.image.load('./Images/space-image_ship2_3.png'))
+        self.images.append(pg.image.load('./Images/space-image_ship2_4.png'))
+        self.images.append(pg.image.load('./Images/space-image_ship2_5.png'))
+        self.images.append(pg.image.load('./Images/space-image_ship2_6.png'))
         self.index = 0
         self.image = self.images[self.index]
 # --- Player Main Bullet ---
@@ -165,18 +165,18 @@ class Bullet(pg.sprite.Sprite):
         super(Bullet, self).__init__()
         #player bullet sprites/animation
         self.images = []
-        self.images.append(pg.image.load('space-image_pbullet_1.png'))
-        self.images.append(pg.image.load('space-image_pbullet_2.png'))
-        self.images.append(pg.image.load('space-image_pbullet_3.png'))
-        self.images.append(pg.image.load('space-image_pbullet_4.png'))
-        self.images.append(pg.image.load('space-image_pbullet_5.png'))
-        self.images.append(pg.image.load('space-image_pbullet_6.png'))
+        self.images.append(pg.image.load('./Images/space-image_pbullet_1.png'))
+        self.images.append(pg.image.load('./Images/space-image_pbullet_2.png'))
+        self.images.append(pg.image.load('./Images/space-image_pbullet_3.png'))
+        self.images.append(pg.image.load('./Images/space-image_pbullet_4.png'))
+        self.images.append(pg.image.load('./Images/space-image_pbullet_5.png'))
+        self.images.append(pg.image.load('./Images/space-image_pbullet_6.png'))
         self.index = 0
         self.image = self.images[self.index]
         #player bullet position
         self.rect = self.image.get_rect()
         #player bullet sound
-        pg.mixer.Channel(1).play(pg.mixer.Sound('space-sound_pbullet.wav'))
+        pg.mixer.Channel(1).play(pg.mixer.Sound('./Sound/space-sound_pbullet.wav'))
     #player bullet update at every frame
     def update(self):
         #player bullet animation update
@@ -195,12 +195,12 @@ class Pbullet2(pg.sprite.Sprite):
         super(Pbullet2, self).__init__()
         #pbullet2 sprites/animation
         self.images = []
-        self.images.append(pg.transform.scale(pg.image.load('space-image_pbullet2_1.png'), (3, 650)))
-        self.images.append(pg.transform.scale(pg.image.load('space-image_pbullet2_2.png'), (3, 650)))
-        self.images.append(pg.transform.scale(pg.image.load('space-image_pbullet2_3.png'), (3, 650)))
-        self.images.append(pg.transform.scale(pg.image.load('space-image_pbullet2_4.png'), (3, 650)))
-        self.images.append(pg.transform.scale(pg.image.load('space-image_pbullet2_5.png'), (3, 650)))
-        self.images.append(pg.transform.scale(pg.image.load('space-image_pbullet2_6.png'), (3, 650)))
+        self.images.append(pg.transform.scale(pg.image.load('./Images/space-image_pbullet2_1.png'), (3, 650)))
+        self.images.append(pg.transform.scale(pg.image.load('./Images/space-image_pbullet2_2.png'), (3, 650)))
+        self.images.append(pg.transform.scale(pg.image.load('./Images/space-image_pbullet2_3.png'), (3, 650)))
+        self.images.append(pg.transform.scale(pg.image.load('./Images/space-image_pbullet2_4.png'), (3, 650)))
+        self.images.append(pg.transform.scale(pg.image.load('./Images/space-image_pbullet2_5.png'), (3, 650)))
+        self.images.append(pg.transform.scale(pg.image.load('./Images/space-image_pbullet2_6.png'), (3, 650)))
         self.index = 0
         self.image = self.images[self.index]
         #pbullet2  position
@@ -208,7 +208,7 @@ class Pbullet2(pg.sprite.Sprite):
         #pbullet2 specific initial timer set to 0
         self.time_elapsed_since_pshoot2 = 0
         #pbullet2 sound
-        pg.mixer.Channel(6).play(pg.mixer.Sound('space-sound_pbullet2.wav'))
+        pg.mixer.Channel(6).play(pg.mixer.Sound('./Sound/space-sound_pbullet2.wav'))
     #pbullet2 update at every frame
     def update(self):
         #pbullet2 animation update
@@ -227,18 +227,18 @@ class Pbullet4(pg.sprite.Sprite):
         super(Pbullet4, self).__init__()
         #pbullet4 sprites/animation
         self.images = []
-        self.images.append(pg.image.load('space-image_pbullet4_1.png'))
-        self.images.append(pg.image.load('space-image_pbullet4_2.png'))
-        self.images.append(pg.image.load('space-image_pbullet4_3.png'))
-        self.images.append(pg.image.load('space-image_pbullet4_4.png'))
-        self.images.append(pg.image.load('space-image_pbullet4_5.png'))
-        self.images.append(pg.image.load('space-image_pbullet4_6.png'))
+        self.images.append(pg.image.load('./Images/space-image_pbullet4_1.png'))
+        self.images.append(pg.image.load('./Images/space-image_pbullet4_2.png'))
+        self.images.append(pg.image.load('./Images/space-image_pbullet4_3.png'))
+        self.images.append(pg.image.load('./Images/space-image_pbullet4_4.png'))
+        self.images.append(pg.image.load('./Images/space-image_pbullet4_5.png'))
+        self.images.append(pg.image.load('./Images/space-image_pbullet4_6.png'))
         self.index = 0
         self.image = self.images[self.index]
         #pbullet4 position
         self.rect = self.image.get_rect()
         #pbullet4 sound
-        pg.mixer.Channel(1).play(pg.mixer.Sound('space-sound_pbullet.wav'))
+        pg.mixer.Channel(1).play(pg.mixer.Sound('./Sound/space-sound_pbullet.wav'))
     #pbullet4 update at every frame
     def update(self):
         #pbullet4 animation update
@@ -257,7 +257,7 @@ class Playerlife(pg.sprite.Sprite):
         super(Playerlife, self).__init__()
         #player life display sprites/animation
         self.images = []
-        self.images.append(pg.transform.scale(pg.image.load('space-image_plife.png'), (60, 36)))
+        self.images.append(pg.transform.scale(pg.image.load('./Images/space-image_plife.png'), (60, 36)))
         self.index = 0
         self.image = self.images[self.index]
         #player life display position
@@ -272,7 +272,7 @@ class Player2life(Playerlife):
         super(Player2life, self).__init__()
         #player2 life display sprites/animation
         self.images = []
-        self.images.append(pg.transform.scale(pg.image.load('space-image_p2life.png'), (60, 36)))
+        self.images.append(pg.transform.scale(pg.image.load('./Images/space-image_p2life.png'), (60, 36)))
         self.index = 0
         self.image = self.images[self.index]
 # --- Power Up Classes ---
@@ -282,10 +282,10 @@ class Powerup1(pg.sprite.Sprite):
         #powerup1 sprites/animation
         super(Powerup1, self).__init__()
         self.images = []
-        self.images.append(pg.transform.scale(pg.image.load('space-image_powerup1_1.png'), (40, 40)))
-        self.images.append(pg.transform.scale(pg.image.load('space-image_powerup1_2.png'), (40, 40)))
-        self.images.append(pg.transform.scale(pg.image.load('space-image_powerup1_3.png'), (40, 40)))
-        self.images.append(pg.transform.scale(pg.image.load('space-image_powerup1_4.png'), (40, 40)))
+        self.images.append(pg.transform.scale(pg.image.load('./Images/space-image_powerup1_1.png'), (40, 40)))
+        self.images.append(pg.transform.scale(pg.image.load('./Images/space-image_powerup1_2.png'), (40, 40)))
+        self.images.append(pg.transform.scale(pg.image.load('./Images/space-image_powerup1_3.png'), (40, 40)))
+        self.images.append(pg.transform.scale(pg.image.load('./Images/space-image_powerup1_4.png'), (40, 40)))
         self.index = random.randint(0,3) #randomize starting index(frame) to play
         self.image = self.images[self.index]
         #powerup1 position
@@ -316,9 +316,9 @@ class Powerup2(pg.sprite.Sprite):
         #powerup2 sprites/animation
         super(Powerup2, self).__init__()
         self.images = []
-        self.images.append(pg.transform.scale(pg.image.load('space-image_powerup2_1.png'), (40, 40)))
-        self.images.append(pg.transform.scale(pg.image.load('space-image_powerup2_2.png'), (40, 40)))
-        self.images.append(pg.transform.scale(pg.image.load('space-image_powerup2_3.png'), (40, 40)))
+        self.images.append(pg.transform.scale(pg.image.load('./Images/space-image_powerup2_1.png'), (40, 40)))
+        self.images.append(pg.transform.scale(pg.image.load('./Images/space-image_powerup2_2.png'), (40, 40)))
+        self.images.append(pg.transform.scale(pg.image.load('./Images/space-image_powerup2_3.png'), (40, 40)))
         self.index = random.randint(0,2) #randomize starting index(frame) to play
         self.image = self.images[self.index]
         #powerup2 position
@@ -349,10 +349,10 @@ class Powerup3(pg.sprite.Sprite):
         #powerup3 sprites/animation
         super(Powerup3, self).__init__()
         self.images = []
-        self.images.append(pg.transform.scale(pg.image.load('space-image_powerup3_1.png'), (40, 40)))
-        self.images.append(pg.transform.scale(pg.image.load('space-image_powerup3_2.png'), (40, 40)))
-        self.images.append(pg.transform.scale(pg.image.load('space-image_powerup3_3.png'), (40, 40)))
-        self.images.append(pg.transform.scale(pg.image.load('space-image_powerup3_4.png'), (40, 40)))
+        self.images.append(pg.transform.scale(pg.image.load('./Images/space-image_powerup3_1.png'), (40, 40)))
+        self.images.append(pg.transform.scale(pg.image.load('./Images/space-image_powerup3_2.png'), (40, 40)))
+        self.images.append(pg.transform.scale(pg.image.load('./Images/space-image_powerup3_3.png'), (40, 40)))
+        self.images.append(pg.transform.scale(pg.image.load('./Images/space-image_powerup3_4.png'), (40, 40)))
         self.index = random.randint(0,3) #randomize starting index(frame) to play
         self.image = self.images[self.index]
         #powerup3 position
@@ -383,10 +383,10 @@ class Powerup4(pg.sprite.Sprite):
         #powerup4 sprites/animation
         super(Powerup4, self).__init__()
         self.images = []
-        self.images.append(pg.transform.scale(pg.image.load('space-image_powerup4_1.png'), (40, 40)))
-        self.images.append(pg.transform.scale(pg.image.load('space-image_powerup4_2.png'), (40, 40)))
-        self.images.append(pg.transform.scale(pg.image.load('space-image_powerup4_3.png'), (40, 40)))
-        self.images.append(pg.transform.scale(pg.image.load('space-image_powerup4_4.png'), (40, 40)))
+        self.images.append(pg.transform.scale(pg.image.load('./Images/space-image_powerup4_1.png'), (40, 40)))
+        self.images.append(pg.transform.scale(pg.image.load('./Images/space-image_powerup4_2.png'), (40, 40)))
+        self.images.append(pg.transform.scale(pg.image.load('./Images/space-image_powerup4_3.png'), (40, 40)))
+        self.images.append(pg.transform.scale(pg.image.load('./Images/space-image_powerup4_4.png'), (40, 40)))
         self.index = random.randint(0,3) #randomize starting index(frame) to play
         self.image = self.images[self.index]
         #powerup4 position
@@ -418,22 +418,22 @@ class Bossenemy1(pg.sprite.Sprite):
         super(Bossenemy1, self).__init__()
         #bossenemy1 sprites/animation
         self.images = []
-        self.images.append(pg.transform.scale(pg.image.load('space-image_boss1_1.png'), (417, 227)))
-        self.images.append(pg.transform.scale(pg.image.load('space-image_boss1_2.png'), (417, 227)))
-        self.images.append(pg.transform.scale(pg.image.load('space-image_boss1_3.png'), (417, 227)))
-        self.images.append(pg.transform.scale(pg.image.load('space-image_boss1_4.png'), (417, 227)))
-        self.images.append(pg.transform.scale(pg.image.load('space-image_boss1_5.png'), (417, 227)))
-        self.images.append(pg.transform.scale(pg.image.load('space-image_boss1_6.png'), (417, 227)))
-        self.images.append(pg.transform.scale(pg.image.load('space-image_boss1_7.png'), (417, 227)))
-        self.images.append(pg.transform.scale(pg.image.load('space-image_boss1_8.png'), (417, 227)))
-        self.images.append(pg.transform.scale(pg.image.load('space-image_boss1_9.png'), (417, 227)))
-        self.images.append(pg.transform.scale(pg.image.load('space-image_boss1_10.png'), (417, 227)))
-        self.images.append(pg.transform.scale(pg.image.load('space-image_boss1_11.png'), (417, 227)))
-        self.images.append(pg.transform.scale(pg.image.load('space-image_boss1_12.png'), (417, 227)))
-        self.images.append(pg.transform.scale(pg.image.load('space-image_boss1_13.png'), (417, 227)))
-        self.images.append(pg.transform.scale(pg.image.load('space-image_boss1_14.png'), (417, 227)))
-        self.images.append(pg.transform.scale(pg.image.load('space-image_boss1_15.png'), (417, 227)))
-        self.images.append(pg.transform.scale(pg.image.load('space-image_boss1_16.png'), (417, 227)))
+        self.images.append(pg.transform.scale(pg.image.load('./Images/space-image_boss1_1.png'), (417, 227)))
+        self.images.append(pg.transform.scale(pg.image.load('./Images/space-image_boss1_2.png'), (417, 227)))
+        self.images.append(pg.transform.scale(pg.image.load('./Images/space-image_boss1_3.png'), (417, 227)))
+        self.images.append(pg.transform.scale(pg.image.load('./Images/space-image_boss1_4.png'), (417, 227)))
+        self.images.append(pg.transform.scale(pg.image.load('./Images/space-image_boss1_5.png'), (417, 227)))
+        self.images.append(pg.transform.scale(pg.image.load('./Images/space-image_boss1_6.png'), (417, 227)))
+        self.images.append(pg.transform.scale(pg.image.load('./Images/space-image_boss1_7.png'), (417, 227)))
+        self.images.append(pg.transform.scale(pg.image.load('./Images/space-image_boss1_8.png'), (417, 227)))
+        self.images.append(pg.transform.scale(pg.image.load('./Images/space-image_boss1_9.png'), (417, 227)))
+        self.images.append(pg.transform.scale(pg.image.load('./Images/space-image_boss1_10.png'), (417, 227)))
+        self.images.append(pg.transform.scale(pg.image.load('./Images/space-image_boss1_11.png'), (417, 227)))
+        self.images.append(pg.transform.scale(pg.image.load('./Images/space-image_boss1_12.png'), (417, 227)))
+        self.images.append(pg.transform.scale(pg.image.load('./Images/space-image_boss1_13.png'), (417, 227)))
+        self.images.append(pg.transform.scale(pg.image.load('./Images/space-image_boss1_14.png'), (417, 227)))
+        self.images.append(pg.transform.scale(pg.image.load('./Images/space-image_boss1_15.png'), (417, 227)))
+        self.images.append(pg.transform.scale(pg.image.load('./Images/space-image_boss1_16.png'), (417, 227)))
         self.index = random.randint(0,7) #randomize starting index(frame) to play
         self.image = self.images[self.index]
         #bossenemy1 position
@@ -881,12 +881,12 @@ class Enemy1(pg.sprite.Sprite):
         super(Enemy1, self).__init__()
         #enemy1 sprites/animation
         self.images = []
-        self.images.append(pg.transform.scale(pg.image.load('space-image_e1_1.png'), (87, 90)))
-        self.images.append(pg.transform.scale(pg.image.load('space-image_e1_2.png'), (87, 90)))
-        self.images.append(pg.transform.scale(pg.image.load('space-image_e1_3.png'), (87, 90)))
-        self.images.append(pg.transform.scale(pg.image.load('space-image_e1_4.png'), (87, 90)))
-        self.images.append(pg.transform.scale(pg.image.load('space-image_e1_5.png'), (87, 90)))
-        self.images.append(pg.transform.scale(pg.image.load('space-image_e1_6.png'), (87, 90)))
+        self.images.append(pg.transform.scale(pg.image.load('./Images/space-image_e1_1.png'), (87, 90)))
+        self.images.append(pg.transform.scale(pg.image.load('./Images/space-image_e1_2.png'), (87, 90)))
+        self.images.append(pg.transform.scale(pg.image.load('./Images/space-image_e1_3.png'), (87, 90)))
+        self.images.append(pg.transform.scale(pg.image.load('./Images/space-image_e1_4.png'), (87, 90)))
+        self.images.append(pg.transform.scale(pg.image.load('./Images/space-image_e1_5.png'), (87, 90)))
+        self.images.append(pg.transform.scale(pg.image.load('./Images/space-image_e1_6.png'), (87, 90)))
         self.index = random.randint(0,5) #randomize starting index(frame) to play
         self.image = self.images[self.index]
         #enemy1 position
@@ -922,12 +922,12 @@ class Enemy2(pg.sprite.Sprite):
         super(Enemy2, self).__init__()
         #enemy2 sprites/animation
         self.images = []
-        self.images.append(pg.transform.scale(pg.image.load('space-image_e2_1.png'), (76, 100)))
-        self.images.append(pg.transform.scale(pg.image.load('space-image_e2_2.png'), (76, 100)))
-        self.images.append(pg.transform.scale(pg.image.load('space-image_e2_3.png'), (76, 100)))
-        self.images.append(pg.transform.scale(pg.image.load('space-image_e2_4.png'), (76, 100)))
-        self.images.append(pg.transform.scale(pg.image.load('space-image_e2_5.png'), (76, 100)))
-        self.images.append(pg.transform.scale(pg.image.load('space-image_e2_6.png'), (76, 100)))
+        self.images.append(pg.transform.scale(pg.image.load('./Images/space-image_e2_1.png'), (76, 100)))
+        self.images.append(pg.transform.scale(pg.image.load('./Images/space-image_e2_2.png'), (76, 100)))
+        self.images.append(pg.transform.scale(pg.image.load('./Images/space-image_e2_3.png'), (76, 100)))
+        self.images.append(pg.transform.scale(pg.image.load('./Images/space-image_e2_4.png'), (76, 100)))
+        self.images.append(pg.transform.scale(pg.image.load('./Images/space-image_e2_5.png'), (76, 100)))
+        self.images.append(pg.transform.scale(pg.image.load('./Images/space-image_e2_6.png'), (76, 100)))
         self.index = random.randint(0,5) #randomize starting index(frame) to play
         self.image = self.images[self.index]
         #enemy2 position
@@ -973,12 +973,12 @@ class Enemy3(pg.sprite.Sprite):
         super(Enemy3, self).__init__()
         #enemy3 sprites/animation
         self.images = []
-        self.images.append(pg.transform.scale(pg.image.load('space-image_e3_1.png'), (90, 90)))
-        self.images.append(pg.transform.scale(pg.image.load('space-image_e3_2.png'), (90, 90)))
-        self.images.append(pg.transform.scale(pg.image.load('space-image_e3_3.png'), (90, 90)))
-        self.images.append(pg.transform.scale(pg.image.load('space-image_e3_4.png'), (90, 90)))
-        self.images.append(pg.transform.scale(pg.image.load('space-image_e3_5.png'), (90, 90)))
-        self.images.append(pg.transform.scale(pg.image.load('space-image_e3_6.png'), (90, 90)))
+        self.images.append(pg.transform.scale(pg.image.load('./Images/space-image_e3_1.png'), (90, 90)))
+        self.images.append(pg.transform.scale(pg.image.load('./Images/space-image_e3_2.png'), (90, 90)))
+        self.images.append(pg.transform.scale(pg.image.load('./Images/space-image_e3_3.png'), (90, 90)))
+        self.images.append(pg.transform.scale(pg.image.load('./Images/space-image_e3_4.png'), (90, 90)))
+        self.images.append(pg.transform.scale(pg.image.load('./Images/space-image_e3_5.png'), (90, 90)))
+        self.images.append(pg.transform.scale(pg.image.load('./Images/space-image_e3_6.png'), (90, 90)))
         self.index = random.randint(0,5) #randomize starting index(frame) to play
         self.image = self.images[self.index]
         #enemy3 position
@@ -1029,24 +1029,24 @@ class Enemy4(pg.sprite.Sprite):
         super(Enemy4, self).__init__()
         #enemy4 sprites/animation
         self.images = []
-        self.images.append(pg.transform.scale(pg.image.load('space-image_e4_1.png'), (76, 100)))
-        self.images.append(pg.transform.scale(pg.image.load('space-image_e4_2.png'), (76, 100)))
-        self.images.append(pg.transform.scale(pg.image.load('space-image_e4_3.png'), (76, 100)))
-        self.images.append(pg.transform.scale(pg.image.load('space-image_e4_4.png'), (76, 100)))
-        self.images.append(pg.transform.scale(pg.image.load('space-image_e4_5.png'), (76, 100)))
-        self.images.append(pg.transform.scale(pg.image.load('space-image_e4_6.png'), (76, 100)))
-        self.images.append(pg.transform.scale(pg.image.load('space-image_e4_7.png'), (76, 100)))
-        self.images.append(pg.transform.scale(pg.image.load('space-image_e4_8.png'), (76, 100)))
-        self.images.append(pg.transform.scale(pg.image.load('space-image_e4_9.png'), (76, 100)))
-        self.images.append(pg.transform.scale(pg.image.load('space-image_e4_10.png'), (76, 100)))
-        self.images.append(pg.transform.scale(pg.image.load('space-image_e4_11.png'), (76, 100)))
-        self.images.append(pg.transform.scale(pg.image.load('space-image_e4_12.png'), (76, 100)))
-        self.images.append(pg.transform.scale(pg.image.load('space-image_e4_13.png'), (76, 100)))
-        self.images.append(pg.transform.scale(pg.image.load('space-image_e4_14.png'), (76, 100)))
-        self.images.append(pg.transform.scale(pg.image.load('space-image_e4_15.png'), (76, 100)))
-        self.images.append(pg.transform.scale(pg.image.load('space-image_e4_16.png'), (76, 100)))
-        self.images.append(pg.transform.scale(pg.image.load('space-image_e4_17.png'), (76, 100)))
-        self.images.append(pg.transform.scale(pg.image.load('space-image_e4_18.png'), (76, 100)))
+        self.images.append(pg.transform.scale(pg.image.load('./Images/space-image_e4_1.png'), (76, 100)))
+        self.images.append(pg.transform.scale(pg.image.load('./Images/space-image_e4_2.png'), (76, 100)))
+        self.images.append(pg.transform.scale(pg.image.load('./Images/space-image_e4_3.png'), (76, 100)))
+        self.images.append(pg.transform.scale(pg.image.load('./Images/space-image_e4_4.png'), (76, 100)))
+        self.images.append(pg.transform.scale(pg.image.load('./Images/space-image_e4_5.png'), (76, 100)))
+        self.images.append(pg.transform.scale(pg.image.load('./Images/space-image_e4_6.png'), (76, 100)))
+        self.images.append(pg.transform.scale(pg.image.load('./Images/space-image_e4_7.png'), (76, 100)))
+        self.images.append(pg.transform.scale(pg.image.load('./Images/space-image_e4_8.png'), (76, 100)))
+        self.images.append(pg.transform.scale(pg.image.load('./Images/space-image_e4_9.png'), (76, 100)))
+        self.images.append(pg.transform.scale(pg.image.load('./Images/space-image_e4_10.png'), (76, 100)))
+        self.images.append(pg.transform.scale(pg.image.load('./Images/space-image_e4_11.png'), (76, 100)))
+        self.images.append(pg.transform.scale(pg.image.load('./Images/space-image_e4_12.png'), (76, 100)))
+        self.images.append(pg.transform.scale(pg.image.load('./Images/space-image_e4_13.png'), (76, 100)))
+        self.images.append(pg.transform.scale(pg.image.load('./Images/space-image_e4_14.png'), (76, 100)))
+        self.images.append(pg.transform.scale(pg.image.load('./Images/space-image_e4_15.png'), (76, 100)))
+        self.images.append(pg.transform.scale(pg.image.load('./Images/space-image_e4_16.png'), (76, 100)))
+        self.images.append(pg.transform.scale(pg.image.load('./Images/space-image_e4_17.png'), (76, 100)))
+        self.images.append(pg.transform.scale(pg.image.load('./Images/space-image_e4_18.png'), (76, 100)))
         self.index = random.randint(0,5) #randomize starting index(frame) to play
         self.image = self.images[self.index]
         #enemy4 position
@@ -1109,10 +1109,10 @@ class Smallmeteor(pg.sprite.Sprite):
         super(Smallmeteor, self).__init__()
         self.images = []
         sprite_size = random.randint(32, 64) #randomize small meteor size
-        self.images.append(pg.transform.scale(pg.image.load('space-image_meteor_small_1.png'), (sprite_size, sprite_size)))
-        self.images.append(pg.transform.scale(pg.image.load('space-image_meteor_small_2.png'), (sprite_size, sprite_size)))
-        self.images.append(pg.transform.scale(pg.image.load('space-image_meteor_small_3.png'), (sprite_size, sprite_size)))
-        self.images.append(pg.transform.scale(pg.image.load('space-image_meteor_small_4.png'), (sprite_size, sprite_size)))
+        self.images.append(pg.transform.scale(pg.image.load('./Images/space-image_meteor_small_1.png'), (sprite_size, sprite_size)))
+        self.images.append(pg.transform.scale(pg.image.load('./Images/space-image_meteor_small_2.png'), (sprite_size, sprite_size)))
+        self.images.append(pg.transform.scale(pg.image.load('./Images/space-image_meteor_small_3.png'), (sprite_size, sprite_size)))
+        self.images.append(pg.transform.scale(pg.image.load('./Images/space-image_meteor_small_4.png'), (sprite_size, sprite_size)))
         self.index = random.randint(0,3) #randomize starting index(frame) to play
         self.image = self.images[self.index]
         #small meteor position
@@ -1145,10 +1145,10 @@ class Ebullet(pg.sprite.Sprite):
         super(Ebullet, self).__init__()
         #ebullet sprites/animation
         self.images = []
-        self.images.append(pg.transform.scale(pg.image.load('space-image_ebullet_1.png'), (16, 32)))
-        self.images.append(pg.transform.scale(pg.image.load('space-image_ebullet_2.png'), (16, 32)))
-        self.images.append(pg.transform.scale(pg.image.load('space-image_ebullet_3.png'), (16, 32)))
-        self.images.append(pg.transform.scale(pg.image.load('space-image_ebullet_4.png'), (16, 32)))
+        self.images.append(pg.transform.scale(pg.image.load('./Images/space-image_ebullet_1.png'), (16, 32)))
+        self.images.append(pg.transform.scale(pg.image.load('./Images/space-image_ebullet_2.png'), (16, 32)))
+        self.images.append(pg.transform.scale(pg.image.load('./Images/space-image_ebullet_3.png'), (16, 32)))
+        self.images.append(pg.transform.scale(pg.image.load('./Images/space-image_ebullet_4.png'), (16, 32)))
         self.index = 0
         self.image = self.images[self.index]
         #ebullet position
@@ -1156,7 +1156,7 @@ class Ebullet(pg.sprite.Sprite):
         #ebullet id
         self.id = 2.1
         #ebullet sound
-        pg.mixer.Channel(7).play(pg.mixer.Sound('space-sound_ebullet.wav'))
+        pg.mixer.Channel(7).play(pg.mixer.Sound('./Sound/space-sound_ebullet.wav'))
     #ebullet update at every frame
     def update(self):
         #ebullet animation update
@@ -1174,12 +1174,12 @@ class Ebullet2(pg.sprite.Sprite):
         super(Ebullet2, self).__init__()
         #ebullet2 sprites/animation
         self.images = []
-        self.images.append(pg.transform.scale(pg.image.load('space-image_ebullet2_1.png'), (5, 650)))
-        self.images.append(pg.transform.scale(pg.image.load('space-image_ebullet2_2.png'), (5, 650)))
-        self.images.append(pg.transform.scale(pg.image.load('space-image_ebullet2_3.png'), (5, 650)))
-        self.images.append(pg.transform.scale(pg.image.load('space-image_ebullet2_4.png'), (5, 650)))
-        self.images.append(pg.transform.scale(pg.image.load('space-image_ebullet2_5.png'), (5, 650)))
-        self.images.append(pg.transform.scale(pg.image.load('space-image_ebullet2_6.png'), (5, 650)))
+        self.images.append(pg.transform.scale(pg.image.load('./Images/space-image_ebullet2_1.png'), (5, 650)))
+        self.images.append(pg.transform.scale(pg.image.load('./Images/space-image_ebullet2_2.png'), (5, 650)))
+        self.images.append(pg.transform.scale(pg.image.load('./Images/space-image_ebullet2_3.png'), (5, 650)))
+        self.images.append(pg.transform.scale(pg.image.load('./Images/space-image_ebullet2_4.png'), (5, 650)))
+        self.images.append(pg.transform.scale(pg.image.load('./Images/space-image_ebullet2_5.png'), (5, 650)))
+        self.images.append(pg.transform.scale(pg.image.load('./Images/space-image_ebullet2_6.png'), (5, 650)))
         self.index = 0
         self.image = self.images[self.index]
         #ebullet2  position
@@ -1189,7 +1189,7 @@ class Ebullet2(pg.sprite.Sprite):
         #ebullet2 specific initial timer set to 0
         self.time_elapsed_since_ebullet2shoot = 0
         #ebullet2  sound
-        pg.mixer.Channel(8).play(pg.mixer.Sound('space-sound_ebullet2.wav'))
+        pg.mixer.Channel(8).play(pg.mixer.Sound('./Sound/space-sound_ebullet2.wav'))
     #ebullet2  update at every frame
     def update(self):
         #ebullet2  animation update
@@ -1210,17 +1210,17 @@ class Pex(pg.sprite.Sprite):
         #player explosion sprites/animation
         self.images = []
         sprite_size = random.randint(90, 120) #randomize player explosion size
-        self.images.append(pg.transform.scale(pg.image.load('space-image_pex_1.png'), (sprite_size, sprite_size)))
-        self.images.append(pg.transform.scale(pg.image.load('space-image_pex_2.png'), (sprite_size, sprite_size)))
-        self.images.append(pg.transform.scale(pg.image.load('space-image_pex_3.png'), (sprite_size, sprite_size)))
-        self.images.append(pg.transform.scale(pg.image.load('space-image_pex_4.png'), (sprite_size, sprite_size)))
-        self.images.append(pg.transform.scale(pg.image.load('space-image_pex_5.png'), (sprite_size, sprite_size)))
+        self.images.append(pg.transform.scale(pg.image.load('./Images/space-image_pex_1.png'), (sprite_size, sprite_size)))
+        self.images.append(pg.transform.scale(pg.image.load('./Images/space-image_pex_2.png'), (sprite_size, sprite_size)))
+        self.images.append(pg.transform.scale(pg.image.load('./Images/space-image_pex_3.png'), (sprite_size, sprite_size)))
+        self.images.append(pg.transform.scale(pg.image.load('./Images/space-image_pex_4.png'), (sprite_size, sprite_size)))
+        self.images.append(pg.transform.scale(pg.image.load('./Images/space-image_pex_5.png'), (sprite_size, sprite_size)))
         self.index = 0
         self.image = self.images[self.index]
         #player explosion position
         self.rect = self.image.get_rect()
         #player explosion sound
-        pg.mixer.Channel(2).play(pg.mixer.Sound('space-sound_pdamage.wav'))
+        pg.mixer.Channel(2).play(pg.mixer.Sound('./Sound/space-sound_pdamage.wav'))
     #player explosion update at every frame
     def update(self):
         #player explosion animation update
@@ -1236,18 +1236,18 @@ class Bossex(pg.sprite.Sprite):
         #boss explosion sprites/animation
         self.images = []
         sprite_size = random.randint(90, 120) #randomize boss explosion size
-        self.images.append(pg.transform.scale(pg.image.load('space-image_bossex_1.png'), (sprite_size, sprite_size)))
-        self.images.append(pg.transform.scale(pg.image.load('space-image_bossex_2.png'), (sprite_size, sprite_size)))
-        self.images.append(pg.transform.scale(pg.image.load('space-image_bossex_3.png'), (sprite_size, sprite_size)))
-        self.images.append(pg.transform.scale(pg.image.load('space-image_bossex_4.png'), (sprite_size, sprite_size)))
-        self.images.append(pg.transform.scale(pg.image.load('space-image_bossex_5.png'), (sprite_size, sprite_size)))
-        self.images.append(pg.transform.scale(pg.image.load('space-image_bossex_6.png'), (sprite_size, sprite_size)))
+        self.images.append(pg.transform.scale(pg.image.load('./Images/space-image_bossex_1.png'), (sprite_size, sprite_size)))
+        self.images.append(pg.transform.scale(pg.image.load('./Images/space-image_bossex_2.png'), (sprite_size, sprite_size)))
+        self.images.append(pg.transform.scale(pg.image.load('./Images/space-image_bossex_3.png'), (sprite_size, sprite_size)))
+        self.images.append(pg.transform.scale(pg.image.load('./Images/space-image_bossex_4.png'), (sprite_size, sprite_size)))
+        self.images.append(pg.transform.scale(pg.image.load('./Images/space-image_bossex_5.png'), (sprite_size, sprite_size)))
+        self.images.append(pg.transform.scale(pg.image.load('./Images/space-image_bossex_6.png'), (sprite_size, sprite_size)))
         self.index = 0
         self.image = self.images[self.index]
         #boss explosion position
         self.rect = self.image.get_rect()
         #boss explosion sound
-        pg.mixer.Channel(3).play(pg.mixer.Sound('space-sound_bossdamage.wav'))
+        pg.mixer.Channel(3).play(pg.mixer.Sound('./Sound/space-sound_bossdamage.wav'))
     #boss explosion update at every frame
     def update(self):
         #boss explosion animation update
@@ -1263,17 +1263,17 @@ class Smallex(pg.sprite.Sprite):
         #small explosion sprites/animation
         self.images = []
         sprite_size = random.randint(56, 96) #randomize small explosion size
-        self.images.append(pg.transform.scale(pg.image.load('space-image_smallex_1.png'), (sprite_size, sprite_size)))
-        self.images.append(pg.transform.scale(pg.image.load('space-image_smallex_2.png'), (sprite_size, sprite_size)))
-        self.images.append(pg.transform.scale(pg.image.load('space-image_smallex_3.png'), (sprite_size, sprite_size)))
-        self.images.append(pg.transform.scale(pg.image.load('space-image_smallex_4.png'), (sprite_size, sprite_size)))
-        self.images.append(pg.transform.scale(pg.image.load('space-image_smallex_5.png'), (sprite_size, sprite_size)))
+        self.images.append(pg.transform.scale(pg.image.load('./Images/space-image_smallex_1.png'), (sprite_size, sprite_size)))
+        self.images.append(pg.transform.scale(pg.image.load('./Images/space-image_smallex_2.png'), (sprite_size, sprite_size)))
+        self.images.append(pg.transform.scale(pg.image.load('./Images/space-image_smallex_3.png'), (sprite_size, sprite_size)))
+        self.images.append(pg.transform.scale(pg.image.load('./Images/space-image_smallex_4.png'), (sprite_size, sprite_size)))
+        self.images.append(pg.transform.scale(pg.image.load('./Images/space-image_smallex_5.png'), (sprite_size, sprite_size)))
         self.index = 0
         self.image = self.images[self.index]
         #small explosion position
         self.rect = self.image.get_rect()
         #small explosion sound
-        pg.mixer.Channel(4).play(pg.mixer.Sound('space-sound_smallex.wav'))
+        pg.mixer.Channel(4).play(pg.mixer.Sound('./Sound/space-sound_smallex.wav'))
     #small explosion update at every frame
     def update(self):
         #small explosion animation update
@@ -1289,17 +1289,17 @@ class Asteroidex(pg.sprite.Sprite):
         #asteroid explosion sprites/animation
         self.images = []
         sprite_size = random.randint(48, 72) #randomize asteroid explosion size
-        self.images.append(pg.transform.scale(pg.image.load('space-image_asteroidex_1.png'), (sprite_size, sprite_size)))
-        self.images.append(pg.transform.scale(pg.image.load('space-image_asteroidex_2.png'), (sprite_size, sprite_size)))
-        self.images.append(pg.transform.scale(pg.image.load('space-image_asteroidex_3.png'), (sprite_size, sprite_size)))
-        self.images.append(pg.transform.scale(pg.image.load('space-image_asteroidex_4.png'), (sprite_size, sprite_size)))
-        self.images.append(pg.transform.scale(pg.image.load('space-image_asteroidex_5.png'), (sprite_size, sprite_size)))
+        self.images.append(pg.transform.scale(pg.image.load('./Images/space-image_asteroidex_1.png'), (sprite_size, sprite_size)))
+        self.images.append(pg.transform.scale(pg.image.load('./Images/space-image_asteroidex_2.png'), (sprite_size, sprite_size)))
+        self.images.append(pg.transform.scale(pg.image.load('./Images/space-image_asteroidex_3.png'), (sprite_size, sprite_size)))
+        self.images.append(pg.transform.scale(pg.image.load('./Images/space-image_asteroidex_4.png'), (sprite_size, sprite_size)))
+        self.images.append(pg.transform.scale(pg.image.load('./Images/space-image_asteroidex_5.png'), (sprite_size, sprite_size)))
         self.index = 0
         self.image = self.images[self.index]
         #asteroid explosion position
         self.rect = self.image.get_rect()
         #asteroid explosion sound
-        pg.mixer.Channel(5).play(pg.mixer.Sound('space-sound_meteorex.wav'))
+        pg.mixer.Channel(5).play(pg.mixer.Sound('./Sound/space-sound_meteorex.wav'))
     #asteroid explosion update at every frame
     def update(self):
         #asteroid explosion animation update
@@ -1315,10 +1315,10 @@ class Stars(pg.sprite.Sprite):
         #stars sprites/animation
         self.images = []
         sprite_size = random.randint(8, 16) #randomize stars size
-        self.images.append(pg.transform.scale(pg.image.load('space-image_stars_1.png'), (sprite_size, sprite_size)))
-        self.images.append(pg.transform.scale(pg.image.load('space-image_stars_2.png'), (sprite_size, sprite_size)))
-        self.images.append(pg.transform.scale(pg.image.load('space-image_stars_3.png'), (sprite_size, sprite_size)))
-        self.images.append(pg.transform.scale(pg.image.load('space-image_stars_4.png'), (sprite_size, sprite_size)))
+        self.images.append(pg.transform.scale(pg.image.load('./Images/space-image_stars_1.png'), (sprite_size, sprite_size)))
+        self.images.append(pg.transform.scale(pg.image.load('./Images/space-image_stars_2.png'), (sprite_size, sprite_size)))
+        self.images.append(pg.transform.scale(pg.image.load('./Images/space-image_stars_3.png'), (sprite_size, sprite_size)))
+        self.images.append(pg.transform.scale(pg.image.load('./Images/space-image_stars_4.png'), (sprite_size, sprite_size)))
         self.index = 0
         self.image = self.images[self.index]
         #stars position
