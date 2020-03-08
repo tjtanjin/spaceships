@@ -1,6 +1,8 @@
-import sys
+import sys, json, os
 import pygame as pg
 import random
+from pygame.sdlmain_osx import InstallNSApplication
+InstallNSApplication()
 pg.init()
 # --- Player-Related Classes ---
 # --- Player Space Ship ---
@@ -1365,7 +1367,7 @@ def button(text, text_s, text_c, x, y, w, h, ic, ac, action=None):
             action()
     else:
         pg.draw.rect(screen, ic, (x,y,w,h)) #else draw with initial color
-    buttontext_font = pg.font.SysFont("Comic Sans", text_s) #text font
+    buttontext_font = pg.font.Font("./Fonts/font.ttf", text_s) #text font
     text_surface = buttontext_font.render(text, True, text_c) #text surface to draw on
     text_rect = text_surface.get_rect() #check text position
     text_rect.center = ((x+(w/2)), (y+(h/2))) #centralize text
@@ -1406,18 +1408,16 @@ def game_intro():
         display_list.update()
         display_list.draw(screen)
         screen.blit(gameintro_text1, (167, 200))
-        screen.blit(gameintro_text2, (97, 250))
+        screen.blit(gameintro_text2, (67, 250))
         pg.display.flip()
         clock.tick(24)
-    #initial highscore set to 0
-    highscore = 0
     #launch to gamemode select/exit game base on choice
     if gamemodeselect == True:
-        gamemode_select(gamemodeselect, highscore)
+        gamemode_select(gamemodeselect)
     if gamemodeselect == False:
         pg.quit()
         sys.exit()
-def gamemode_select(gamemodeselect, highscore):
+def gamemode_select(gamemodeselect):
     """
     Game loop that runs when selecting gamemode
     Args:
@@ -1463,8 +1463,8 @@ def gamemode_select(gamemodeselect, highscore):
             testship2.testshoot()
         # --- Draw The Screen ---
         screen.fill((0,0,0))
-        button("Single Player", 32, (255, 255, 255), 148, 500, 200, 50, dark_green, green)
-        button("Two Player", 32, (255, 255, 255), 148, 560, 200, 50, dark_green, green)
+        button("Single Player", 28, (255, 255, 255), 148, 500, 200, 50, dark_green, green)
+        button("Two Player", 28, (255, 255, 255), 148, 560, 200, 50, dark_green, green)
         gamemodeselect_text1 = gamemodeselect_text1_font.render("Controls", True, yellow)
         gamemodeselect_text2 = gamemodeselect_instruction1_font.render("Single Player", True, white)
         gamemodeselect_text3 = gamemodeselect_instruction1_font.render("Two Player", True, white)
@@ -1478,25 +1478,33 @@ def gamemode_select(gamemodeselect, highscore):
         gamemodeselect_text9 = gamemodeselect_instruction3_font.render("SHOOT", True, green)
         test_list.update()
         test_list.draw(screen)
-        screen.blit(gamemodeselect_text1, (167, 50))
-        screen.blit(gamemodeselect_text2, (190, 100))
-        screen.blit(gamemodeselect_text3, (195, 245))
-        screen.blit(gamemodeselect_text3_1, (210, 270))
-        screen.blit(gamemodeselect_text3_2, (210, 337))
-        screen.blit(gamemodeselect_text4, (107, 125))
-        screen.blit(gamemodeselect_text4, (107, 297))
-        screen.blit(gamemodeselect_text5, (175, 362))
-        screen.blit(gamemodeselect_text6, (160, 150))
-        screen.blit(gamemodeselect_text6, (160, 382))
-        screen.blit(gamemodeselect_text7, (163, 317))
+        screen.blit(gamemodeselect_text1, (127, 50))
+        screen.blit(gamemodeselect_text2, (180, 100))
+        screen.blit(gamemodeselect_text3, (185, 245))
+        screen.blit(gamemodeselect_text3_1, (205, 270))
+        screen.blit(gamemodeselect_text3_2, (205, 343))
+        screen.blit(gamemodeselect_text4, (97, 128))
+        screen.blit(gamemodeselect_text4, (97, 297))
+        screen.blit(gamemodeselect_text5, (181, 369))
+        screen.blit(gamemodeselect_text6, (158, 155))
+        screen.blit(gamemodeselect_text6, (158, 397))
+        screen.blit(gamemodeselect_text7, (170, 321))
         screen.blit(gamemodeselect_text8, (218, 125))
-        screen.blit(gamemodeselect_text8, (218, 298))
-        screen.blit(gamemodeselect_text8, (218, 363))
-        screen.blit(gamemodeselect_text9, (215, 150))
+        screen.blit(gamemodeselect_text8, (218, 293))
+        screen.blit(gamemodeselect_text8, (218, 366))
+        screen.blit(gamemodeselect_text9, (218, 152))
         screen.blit(gamemodeselect_text9, (215, 318))
-        screen.blit(gamemodeselect_text9, (215, 383))
+        screen.blit(gamemodeselect_text9, (215, 393))
         pg.display.flip()
         clock.tick(60)
+    #set initial highscore
+    if gameplay == True:
+        with open("./Stats/stats.json", "r") as file:
+            stats = json.load(file)
+            if gamemode == 1:
+                highscore = int(stats["single_player_highscore"])
+            else:
+                highscore = int(stats["two_player_highscore"])
     #launch gameplay/exit game base on choice
     if gameplay == True:
         game_play(gameplay, highscore, gamemode)
@@ -1975,9 +1983,9 @@ def game_play(gameplay, highscore, gamemode):
         if gamemode == 2:
             if ship.health <= 0 and ship2.health <= 0:
                 gameplay = False
-    game_over(score, highscore)
+    game_over(score, highscore, gamemode)
 # --- Game Over Loop ---
-def game_over(score, highscore):
+def game_over(score, highscore, gamemode):
     """
     End loop that runs once game is over.
     Args:
@@ -1999,28 +2007,44 @@ def game_over(score, highscore):
                 gameover = False
         # --- Draw The Screen ---       
         screen.fill((0,0,0))
-        button("Play Again", 32, (255, 255, 255), 80, 400, 150, 50, dark_green, green)
-        button("Quit", 32, (255, 255, 255), 280, 400, 150, 50, dark_red, red)
+        button("Play Again", 28, (255, 255, 255), 80, 400, 150, 50, dark_green, green)
+        button("Quit", 28, (255, 255, 255), 280, 400, 150, 50, dark_red, red)
         gameover_text = gameover_text_font.render("Game Over!", True, red)
         gameover_text2 = gameover_text2_font.render("Your High Score is:", True, white)
         gameover_text3 = gameover_text3_font.render(str(score), True, yellow)
-        screen.blit(gameover_text, (110, 200))
+        screen.blit(gameover_text, (90, 200))
         screen.blit(gameover_text2, (155, 300))
         screen.blit(gameover_text3, (240, 350))
         # --- New High Score Management ---
         if score > highscore:
             highscore_text = highscore_text_font.render("You set a new highscore!", True, green)
-            screen.blit(highscore_text, (50, 500))
+            screen.blit(highscore_text, (35, 500))
         pg.display.flip()
     # --- Restart/Quit Management ---
     if score > highscore:
         highscore = score
+        with open("./Stats/stats.json", "r") as file:
+            stats = json.load(file)
+        with open("./Stats/stats.json", "w+") as file:
+            if gamemode == 1:
+                stats["single_player_highscore"] = score
+            else:
+                stats["two_player_highscore"] = score
+            json.dump(stats, file)
     if gamemodeselect == True:
-        gamemode_select(gamemodeselect, highscore)
+        gamemode_select(gamemodeselect)
     if gamemodeselect == False:
         pg.quit()
         sys.exit()
+# --- Notifications set up ---      
+def notify(title, text, sound):
+    os.system("""
+        osascript -e 'display notification "{}" with title "{}" sound name "{}"'
+        """.format(text, title, sound))
 # --- General Set Up ---
+notify('SpaceShips Alert',
+    'Hello there, if your Macbook supports retina display, please run the application in low resolution.',
+    'default')
 clock = pg.time.Clock()
 dt = 16.666 #1 second approximately 1000 ticks
 screen_x = 500 #screen width
@@ -2029,17 +2053,17 @@ screen = pg.display.set_mode((screen_x, screen_y)) #screen game is played on
 pg.display.set_caption("SpaceShips!") #display at top of screen
 pg.mixer.set_num_channels(12) #12 channels for sound
 # --- Fonts to be used ---
-score_font = pg.font.SysFont("Times", 24)
-gameintro_text1_font = pg.font.SysFont("Calibri", 32)
-gameintro_text2_font = pg.font.SysFont("Comic Sans", 72)
-gamemodeselect_text1_font = pg.font.SysFont("Comic Sans", 64)
-gamemodeselect_instruction1_font = pg.font.SysFont("Calibri", 24)
-gamemodeselect_instruction2_font = pg.font.SysFont("Times", 18)
-gamemodeselect_instruction3_font = pg.font.SysFont("Comic Sans", 28)
-gameover_text_font = pg.font.SysFont("Comic Sans", 72)
-gameover_text2_font = pg.font.SysFont("Times", 24)
-gameover_text3_font = pg.font.SysFont("Times", 30)
-highscore_text_font = pg.font.SysFont("Times", 40)
+score_font = pg.font.Font("./Fonts/font.ttf", 24)
+gameintro_text1_font = pg.font.Font("./Fonts/font.ttf", 32)
+gameintro_text2_font = pg.font.Font("./Fonts/font.ttf", 72)
+gamemodeselect_text1_font = pg.font.Font("./Fonts/font.ttf", 64)
+gamemodeselect_instruction1_font = pg.font.Font("./Fonts/font.ttf", 24)
+gamemodeselect_instruction2_font = pg.font.Font("./Fonts/font.ttf", 18)
+gamemodeselect_instruction3_font = pg.font.Font("./Fonts/font.ttf", 28)
+gameover_text_font = pg.font.Font("./Fonts/font.ttf", 72)
+gameover_text2_font = pg.font.Font("./Fonts/font.ttf", 24)
+gameover_text3_font = pg.font.Font("./Fonts/font.ttf", 30)
+highscore_text_font = pg.font.Font("./Fonts/font.ttf", 40)
 # --- Colors to be used ---
 white = (255, 255, 255)
 red = (255, 0, 0)
