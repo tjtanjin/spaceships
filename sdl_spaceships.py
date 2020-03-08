@@ -2,6 +2,18 @@ import sys, json, os
 import pygame as pg
 import random
 from pygame.sdlmain_osx import InstallNSApplication
+path = os.path.expanduser("~/Library/Application Support/")
+# create app directory if not found
+if not os.path.isdir(path + "SpaceShips"):
+    os.mkdir(path + "SpaceShips")
+
+path = path + "SpaceShips"
+# create default stats config if not found
+print(os.listdir(path))
+if os.listdir(path) == []:
+    stats = {"single_player_highscore": "0", "two_player_highscore": "0"}
+    with open(path + "/stats.json", "w+") as file:
+        json.dump(stats, file)
 InstallNSApplication()
 pg.init()
 # --- Player-Related Classes ---
@@ -1499,7 +1511,7 @@ def gamemode_select(gamemodeselect):
         clock.tick(60)
     #set initial highscore
     if gameplay == True:
-        with open("./Stats/stats.json", "r") as file:
+        with open(path + "/stats.json", "r") as file:
             stats = json.load(file)
             if gamemode == 1:
                 highscore = int(stats["single_player_highscore"])
@@ -2023,9 +2035,9 @@ def game_over(score, highscore, gamemode):
     # --- Restart/Quit Management ---
     if score > highscore:
         highscore = score
-        with open("./Stats/stats.json", "r") as file:
+        with open(path + "/stats.json", "r") as file:
             stats = json.load(file)
-        with open("./Stats/stats.json", "w+") as file:
+        with open(path + "/stats.json", "w+") as file:
             if gamemode == 1:
                 stats["single_player_highscore"] = score
             else:
