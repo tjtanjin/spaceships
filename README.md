@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://i.imgur.com/8ZQqzsE.png" />
+  <img src="https://i.imgur.com/WmWW4pJ.png" />
   <h1 align="center">SpaceShips (Local Version)</h1>
 </p>
 
