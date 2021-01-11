@@ -41,7 +41,7 @@ Python
 
 ##### Deployed on:
 <p align="center">
-None (Local Application)
+None (Terminal-based Application)
 </p>
 
 ##### Project Repository
