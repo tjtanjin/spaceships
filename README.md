@@ -56,6 +56,7 @@ The following section will guide you through setting up SpaceShips to play!
 $ cd /home/user/exampleuser/projects/
 $ git clone https://github.com/tjtanjin/spaceships.git
 ```
+* Next, unzip the folders Fonts, Images and Sound as well as create a new empty folder Stats (this tracks your old highscore locally).
 * From the base directory of the project, execute the following command and you will see the welcome screen if everything has been setup correctly, it's that simple!
 ```
 $ python3 sdl_spaceships.py
